@@ -32,13 +32,13 @@ Benefits of this approach:
 ### CI/CD
 As part of a CI/CD pipeline deploy updated Docker images for the services once set up. In particular stateful services that manage thier own schemas.
  1. How will we deploy updates which can include databse schema updates?
-   a. Define new containers to be deployed
-   b. Update database schema which will depend on new container definitions.
-   c. Deploy new containers and update ECS using the updated database schema
+   * Define new containers to be deployed
+   * Update database schema which will depend on new container definitions.
+   * Deploy new containers and update ECS using the updated database schema
  2. Granular Deployment - Limit CD's scope to updating the frequently changed resources and not the infrequently changed resources.
-   a. CD can have set of permissions
-   b. Terraform will use `-target` functionality.
-   c. Limiting scope increases scalability. - wouldnt `terraform apply` everything in an automated way.
+   * CD can have set of permissions
+   * Terraform will use `-target` functionality.
+   * Limiting scope increases scalability. - wouldnt `terraform apply` everything in an automated way.
  3. How can we achieve this while maintaining blue-green deployment
  4. Jenkins will be used instead of AWS CodePipeline to avoid vendor lock-in
 
