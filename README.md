@@ -14,7 +14,7 @@ The idea focuses on three tenants:
 3. CI/CD (Jenkins (blue - green deployment))
 
 ### IaC and Containerization
-The use of an IaC orchestration tool such as `Terraform` in conjuction with `Docker` is sufficient enough for most conifguration mangagement(CM) needs that you do not need a specific CM tool[<sup>[1]</sup>](README.md#Refrences#1).
+The use of an IaC orchestration tool such as `Terraform` in conjunction with `Docker` is sufficient enough for most configuration management(CM) needs that you do not need a specific CM tool[<sup>[1]</sup>](README.md#Refrences#1).
 
 Docker will create an image that has all the software the server needs already installed and configured.
 This image now needs a server to run it. This is where Terraform will provision a bunch of servers on `AWS ECS` and deploy the Docker containers.
