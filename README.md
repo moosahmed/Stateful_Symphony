@@ -59,6 +59,7 @@ As part of a CI/CD pipeline deploy updated Docker images for the services once s
 
 
 ### Stretch Goals
+1. Test impact of Docker update and roll back to a previous version
 2. Some Monitoring/Observability
 
 
