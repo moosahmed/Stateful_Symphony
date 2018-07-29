@@ -3,6 +3,13 @@
 **/*.ini
 **/*.config 
 **/*.props
+
+# IDE files
 *.iml
 .idea/
 
+# Compiled files
+*.tfstate*
+
+# Module directory
+.terraform/
