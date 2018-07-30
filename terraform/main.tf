@@ -20,7 +20,7 @@ module "route_table_network" {
 
 module "subnet_network" {
   source = "./modules/network/subnet/"
-  
+
   vpc_id = "${module.vpc_network.vpc_id}"
   vpc_cidr_prefix = "${module.vpc_network.vpc_cidr_prefix}"
   aws_region = "${var.aws_region}"
