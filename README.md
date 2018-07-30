@@ -57,7 +57,6 @@ As part of a CI/CD pipeline deploy updated Docker images for the services once s
  3. How can we achieve this while maintaining blue-green deployment
  4. Jenkins will be used instead of AWS CodePipeline to avoid vendor lock-in
 
-
 ### Stretch Goals
 1. Test impact of Docker update and roll back to a previous version
 2. Some Monitoring/Observability
@@ -67,3 +66,4 @@ As part of a CI/CD pipeline deploy updated Docker images for the services once s
 1. https://mesosphere.com/blog/stateful-services-black-sheep-container-world/
 2. https://blog.gruntwork.io/why-we-use-terraform-and-not-chef-puppet-ansible-saltstack-or-cloudformation-7989dad2865c
 3. https://medium.com/build-acl/docker-deployments-using-terraform-d2bf36ec7bdf
+4. https://medium.com/muhammet-arslan/kubernetes-cluster-on-aws-with-terraform-1-fdf9b6928ba6
