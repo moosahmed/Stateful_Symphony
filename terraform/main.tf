@@ -84,3 +84,10 @@ module "autoscaling_group" {
   master_launch_config_id = "${module.launch_config.master_launch_config_id}"
   node_launch_config_id   = "${module.launch_config.node_launch_config_id}"
 }
+
+module "ebs_volume" {
+  source = "./modules/volume/ebs/"
+
+  aws_region              = "${var.aws_region}"
+  k8s_cluster             = "${var.k8s_cluster}"
+}
