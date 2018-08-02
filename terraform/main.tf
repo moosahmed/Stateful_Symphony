@@ -60,7 +60,7 @@ module "launch_config" {
 
   aws_region                     = "${var.aws_region}"
   k8s_cluster                    = "${var.k8s_cluster}"
-  aws_key_pair_id                = ""
+  aws_key_pair_id                = "${module.iam_global.aws_key_pair_id}"
 
   security_group_id              = "${module.security_groups.cluster_sg_id}"
 

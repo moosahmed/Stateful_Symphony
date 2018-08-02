@@ -1,3 +1,8 @@
+resource "aws_key_pair" "kubernetes" {
+  key_name   = "kubernetes.symph-cluster.k8s.local-88:57:e2:61:76:4b:d1:f9:97:07:f0:54:f0:72:05:f8"
+  public_key = "${file("${path.module}/data/aws_key_pair_kubernetes.symph-cluster.k8s.local-8857e261764bd1f99707f054f07205f8_public_key")}"
+}
+
 resource "aws_iam_group" "iam-group" {
   name = "iam-group"
 }
