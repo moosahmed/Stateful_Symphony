@@ -12,10 +12,10 @@ variable "public_subnet_id" {
 }
 
 ## Launch Config Variables
-variable "master_lc_id" {
+variable "master_launch_config_id" {
   description = "ID of the Launch Configuration for the master node"
 }
 
-variable "node_lc_id" {
+variable "node_launch_config_id" {
   description = "ID of the Launch Configuration for the worker node"
 }
