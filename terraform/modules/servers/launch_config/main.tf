@@ -6,7 +6,7 @@ resource "aws_launch_configuration" "master" {
   iam_instance_profile        = "${var.master_iam_instance_profile_id}"
   security_groups             = ["${var.security_group_id}"]
   associate_public_ip_address = true
-  user_data                   = "${file("${path.module}/data/aws_launch_configuration_master-${var.aws_region}a.masters.${var.k8s_cluster}_user_data")}"
+  user_data                   = "${file("${path.root}/data/aws_launch_configuration_master-${var.aws_region}a.masters.${var.k8s_cluster}_user_data")}"
 
   root_block_device = {
     volume_type           = "${var.master_volume_type}"
@@ -29,7 +29,7 @@ resource "aws_launch_configuration" "nodes" {
   iam_instance_profile        = "${var.node_iam_instance_profile_id}"
   security_groups             = ["${var.security_group_id}"]
   associate_public_ip_address = true
-  user_data                   = "${file("${path.module}/data/aws_launch_configuration_nodes.${var.k8s_cluster}_user_data")}"
+  user_data                   = "${file("${path.root}/data/aws_launch_configuration_nodes.${var.k8s_cluster}_user_data")}"
 
   root_block_device = {
     volume_type           = "${var.node_volume_type}"
