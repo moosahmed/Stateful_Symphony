@@ -26,6 +26,8 @@ module "igw_network" {
 module "route_table_network" {
   source = "./modules/network/route_table/"
 
+  k8s_cluster = "${var.k8s_cluster}"
+
   vpc_id = "${module.vpc_network.vpc_id}"
   igw_id = "${module.igw_network.igw_id}"
 }

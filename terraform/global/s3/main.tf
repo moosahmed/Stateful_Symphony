@@ -1,5 +1,5 @@
-resource "aws_s3_bucket" "symph.k8s.state" {
-  bucket = "symph.k8s.state"
+resource "aws_s3_bucket" "${var.bucket_name}" {
+  bucket = "${var.bucket_name}"
 
   versioning {
     enabled = true
@@ -7,6 +7,6 @@ resource "aws_s3_bucket" "symph.k8s.state" {
 
   tags {
     KubernetesCluster = "${var.k8s_cluster}"
-    Name              = "symph.k8s.state"
+    Name              = "${var.bucket_name}"
   }
 }

@@ -9,9 +9,12 @@ resource "aws_route_table" "public-rt" {
   }
 
   tags {
-    Name = "${terraform.workspace}-public-rt"
-    Environment = "${terraform.workspace}"
-    Type = "public"
+    KubernetesCluster = "${var.k8s_cluster}"
+    Name              = "${terraform.workspace}-public-rt"
+    Environment       = "${terraform.workspace}"
+    Type              = "public"
+    "kubernetes.io/cluster/${var.k8s_cluster}" = "owned"
+    "kubernetes.io/kops/role"                  = "public"
   }
 }
 
@@ -20,8 +23,8 @@ resource "aws_route_table" "private-rt" {
   vpc_id = "${var.vpc_id}"
 
   tags {
-    Name = "${terraform.workspace}-private-rt"
+    Name        = "${terraform.workspace}-private-rt"
     Environment = "${terraform.workspace}"
-    Type = "public"
+    Type        = "public"
   }
 }
