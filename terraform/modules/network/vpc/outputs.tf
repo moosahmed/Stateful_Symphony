@@ -1,6 +1,6 @@
 output "vpc_id" {
   description = "The ID of the VPC"
-  value       = "${aws_vpc.theCity.id}"
+  value       = "${aws_vpc.symph-cluster-k8s-local.id}"
 }
 
 output "vpc_cidr_prefix" {

@@ -36,11 +36,21 @@ module "route_table_network" {
 module "subnet_network" {
   source          = "./modules/network/subnet/"
 
+  aws_region      = "${var.aws_region}"
   k8s_cluster     = "${var.k8s_cluster}"
   vpc_id          = "${module.vpc_network.vpc_id}"
   vpc_cidr_prefix = "${module.vpc_network.vpc_cidr_prefix}"
-  aws_region      = "${var.aws_region}"
 
   public_rt_id    = "${module.route_table_network.public_rt_id}"
   private_rt_id   = "${module.route_table_network.private_rt_id}"
+}
+
+module "auto_scaling_group" {
+  source           = "./modules/servers/asg/"
+
+  aws_region       = "${var.aws_region}"
+  k8s_cluster      = "${var.k8s_cluster}"
+  public_subnet_id = "${module.subnet_network.public_subnet_id}"
+  master_lc_id     = ""
+  node_lc_id       = ""
 }
