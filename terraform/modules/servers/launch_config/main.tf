@@ -24,9 +24,7 @@ resource "aws_launch_configuration" "master" {
 resource "aws_launch_configuration" "nodes" {
   name_prefix                 = "nodes.${var.k8s_cluster}-"
   image_id                    = "${var.node_image_id}"
-  #  image_id                   = "ami-4bfe6f33"
   instance_type               = "${var.node_instance_type}"
-  #  instance_type               = "t2.micro"
   key_name                    = "${var.aws_key_pair_id}"
   iam_instance_profile        = "${var.node_iam_instance_profile_id}"
   security_groups             = ["${var.security_group_id}"]
