@@ -2,6 +2,10 @@ provider "aws" {
   region = "${var.aws_region}"
 }
 
+module "iam_global" {
+  source ="./global/iam/"
+}
+
 module "s3_global" {
   source = "./global/s3/"
 }
