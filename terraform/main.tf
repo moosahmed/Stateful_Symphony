@@ -4,12 +4,15 @@ provider "aws" {
 
 module "iam_global" {
   source ="./global/iam/"
+
+  k8s_cluster = "${var.k8s_cluster}"
 }
 
 module "s3_global" {
   source      = "./global/s3/"
 
   k8s_cluster = "${var.k8s_cluster}"
+  bucket_name = "${var.s3_bucket_name}"
 }
 
 module "vpc_network" {
