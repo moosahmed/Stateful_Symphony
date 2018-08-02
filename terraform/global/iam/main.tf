@@ -32,7 +32,7 @@ resource "aws_iam_role" "master" {
   assume_role_policy = "${file("${path.module}/data/aws_iam_role_masters.${var.k8s_cluster}_policy")}"
 }
 
-resource "aws_iam_role" "nodes" {
+resource "aws_iam_role" "node" {
   name               = "nodes.${var.k8s_cluster}"
   assume_role_policy = "${file("${path.module}/data/aws_iam_role_nodes.${var.k8s_cluster}_policy")}"
 }
@@ -43,9 +43,9 @@ resource "aws_iam_role_policy" "master" {
   policy = "${file("${path.module}/data/aws_iam_role_policy_masters.${var.k8s_cluster}_policy")}"
 }
 
-resource "aws_iam_role_policy" "nodes" {
+resource "aws_iam_role_policy" "node" {
   name   = "nodes.${var.k8s_cluster}"
-  role   = "${aws_iam_role.nodes.name}"
+  role   = "${aws_iam_role.node.name}"
   policy = "${file("${path.module}/data/aws_iam_role_policy_nodes.${var.k8s_cluster}_policy")}"
 }
 
@@ -54,7 +54,7 @@ resource "aws_iam_instance_profile" "master" {
   role = "${aws_iam_role.master.name}"
 }
 
-resource "aws_iam_instance_profile" "nodes" {
+resource "aws_iam_instance_profile" "node" {
   name = "nodes.${var.k8s_cluster}"
-  role = "${aws_iam_role.nodes.name}"
+  role = "${aws_iam_role.node.name}"
 }
