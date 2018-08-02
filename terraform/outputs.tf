@@ -19,17 +19,17 @@ output "subnet_ids" {
 }
 
 output "masters_role_arn" {
-  value = "${aws_iam_role.master.arn}"
+  value = "${module.iam_global.iam_role_master_arn}"
 }
 
 output "masters_role_name" {
-  value = "${aws_iam_role.master.name}"
+  value = "${module.iam_global.iam_role_master_name}"
 }
 
 output "nodes_role_arn" {
-  value = "${aws_iam_role.nodes.arn}"
+  value = "${module.iam_global.iam_role_node_arn}"
 }
 
 output "nodes_role_name" {
-  value = "${aws_iam_role.nodes.name}"
+  value = "${module.iam_global.iam_role_node_name}"
 }
