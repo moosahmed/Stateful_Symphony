@@ -1,37 +1,40 @@
 ## Public Subnet
 resource "aws_subnet" "public-subnet" {
-  vpc_id = "${var.vpc_id}"
-  cidr_block = "${var.vpc_cidr_prefix}.0.0/19"
+  vpc_id            = "${var.vpc_id}"
+  cidr_block        = "${var.vpc_cidr_prefix}.0.0/19"
   availability_zone = "${var.aws_region}a"
 
   tags {
-    Name = "${terraform.workspace}-public-subnet"
-    Environment = "${terraform.workspace}"
-    Type = "public"
+    KubernetesCluster = "${var.k8s_cluster}"
+    Name              = "${terraform.workspace}-public-subnet"
+    Environment       = "${terraform.workspace}"
+    Type              = "public"
+    "kubernetes.io/cluster/${var.k8s_cluster}" = "owned"
+    "kubernetes.io/role/elb"                   = "1"
   }
 }
 
 ## Private Subnet
 resource "aws_subnet" "private-subnet" {
-  vpc_id = "${var.vpc_id}"
-  cidr_block = "${var.vpc_cidr_prefix}.128.0/20"
+  vpc_id            = "${var.vpc_id}"
+  cidr_block        = "${var.vpc_cidr_prefix}.128.0/20"
   availability_zone = "${var.aws_region}a"
 
   tags {
-    Name = "${terraform.workspace}-private-subnet"
+    Name        = "${terraform.workspace}-private-subnet"
     Environment = "${terraform.workspace}"
-    Type = "private"
+    Type        = "private"
   }
 }
 ## Route table associations
 resource "aws_route_table_association" "public-subnet" {
 
-  subnet_id = "${aws_subnet.public-subnet.id}"
+  subnet_id      = "${aws_subnet.public-subnet.id}"
   route_table_id = "${var.public_rt_id}"
 }
 
 resource "aws_route_table_association" "private-subnet" {
 
-  subnet_id = "${aws_subnet.private-subnet.id}"
+  subnet_id      = "${aws_subnet.private-subnet.id}"
   route_table_id = "${var.private_rt_id}"
 }

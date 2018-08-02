@@ -1,5 +1,9 @@
 ## VPC SETUP
 
+variable "k8s_cluster" {
+  description = "Kubernetes Cluster"
+}
+
 variable "vpc_cidr_prefix" {
   type = "map"
   default = {

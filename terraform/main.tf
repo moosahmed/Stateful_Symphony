@@ -8,10 +8,14 @@ module "iam_global" {
 
 module "s3_global" {
   source = "./global/s3/"
+
+  k8s_cluster = "${var.k8s_cluster}"
 }
 
 module "vpc_network" {
   source = "./modules/network/vpc/"
+
+  k8s_cluster = "${var.k8s_cluster}"
 }
 
 module "igw_network" {
@@ -28,6 +32,8 @@ module "route_table_network" {
 
 module "subnet_network" {
   source = "./modules/network/subnet/"
+
+  k8s_cluster = "${var.k8s_cluster}"
 
   vpc_id = "${module.vpc_network.vpc_id}"
   vpc_cidr_prefix = "${module.vpc_network.vpc_cidr_prefix}"

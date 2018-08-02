@@ -4,10 +4,10 @@ resource "aws_vpc" "symph-cluster-k8s-local" {
   enable_dns_support   = true
 
   tags {
-    KubernetesCluster = "symph-cluster.k8s.local"
+    KubernetesCluster = "${var.k8s_cluster}"
     Name              = "${terraform.workspace}-vpc"
     Environment       = "${terraform.workspace}"
-    "kubernetes.io/cluster/symph-cluster.k8s.local" = "owned"
+    "kubernetes.io/cluster/${var.k8s_cluster}" = "owned"
   }
 }
 
@@ -16,10 +16,10 @@ resource "aws_vpc_dhcp_options" "symph-cluster-k8s-local" {
   domain_name_servers = ["AmazonProvidedDNS"]
 
   tags = {
-    KubernetesCluster = "symph-cluster.k8s.local"
+    KubernetesCluster = "${var.k8s_cluster}"
     Name              = "${terraform.workspace}-vpc-dhcp-ops"
     Environment       = "${terraform.workspace}"
-    "kubernetes.io/cluster/symph-cluster.k8s.local" = "owned"
+    "kubernetes.io/cluster/${var.k8s_cluster}" = "owned"
   }
 }
 
