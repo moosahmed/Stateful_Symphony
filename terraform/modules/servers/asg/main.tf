@@ -1,6 +1,6 @@
 resource "aws_autoscaling_group" "master" {
   name                 = "master-${var.aws_region}a.masters.${var.k8s_cluster}"
-  launch_configuration = "${var.master_lc_id}"
+  launch_configuration = "${var.master_launch_config_id}"
   max_size             = 1
   min_size             = 1
   vpc_zone_identifier  = ["${var.public_subnet_id}"]
@@ -35,7 +35,7 @@ resource "aws_autoscaling_group" "master" {
 
 resource "aws_autoscaling_group" "nodes" {
   name                 = "nodes."
-  launch_configuration = "${var.node_lc_id}"
+  launch_configuration = "${var.node_launch_config_id}"
   max_size             = 2
   min_size             = 2
   vpc_zone_identifier  = ["${var.public_subnet_id}"]
