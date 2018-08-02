@@ -2,6 +2,10 @@ provider "aws" {
   region = "${var.aws_region}"
 }
 
+module "s3_global" {
+  source = "./global/s3/"
+}
+
 module "vpc_network" {
   source = "./modules/network/vpc/"
 }
