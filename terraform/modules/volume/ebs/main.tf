@@ -1,5 +1,5 @@
 resource "aws_ebs_volume" "a-etcd" {
-  availability_zone = "${var.aws_region}"
+  availability_zone = "${var.aws_region}a"
   size              = 20
   type              = "gp2"
   encrypted         = false
