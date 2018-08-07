@@ -6,30 +6,54 @@ output "cluster_name" {
   value = "${var.k8s_cluster}"
 }
 
-output "vpc_id" {
-  value = "${module.vpc_network.vpc_id}"
+locals {
+  config_map_aws_auth = <<CONFIGMAPAWSAUTH
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - rolearn: ${module.iam_global.iam_role_node_arn}
+      username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes
+CONFIGMAPAWSAUTH
+
+  kubeconfig = <<KUBECONFIG
+apiVersion: v1
+clusters:
+- cluster:
+    server: ${module.eks_cluster.eks_cluster_endpoint}
+    certificate-authority-data: ${module.eks_cluster.eks_cluster_cert_auth_0data}
+  name: kubernetes
+contexts:
+- context:
+    cluster: kubernetes
+    user: aws
+  name: aws
+current-context: aws
+kind: Config
+preferences: {}
+users:
+- name: aws
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1alpha1
+      command: aws-iam-authenticator
+      args:
+        - "token"
+        - "-i"
+        - "${var.k8s_cluster}"
+KUBECONFIG
 }
 
-output "security_group_ids" {
-  value = ["${module.security_groups.cluster_sg_id}"]
+output "config_map_aws_auth" {
+  value = "${local.config_map_aws_auth}"
 }
 
-output "subnet_ids" {
-  value = ["${module.subnet_network.public_subnet_id}"]
-}
-
-output "masters_role_arn" {
-  value = "${module.iam_global.iam_role_master_arn}"
-}
-
-output "masters_role_name" {
-  value = "${module.iam_global.iam_role_master_name}"
-}
-
-output "nodes_role_arn" {
-  value = "${module.iam_global.iam_role_node_arn}"
-}
-
-output "nodes_role_name" {
-  value = "${module.iam_global.iam_role_node_name}"
+output "kubeconfig" {
+  value = "${local.kubeconfig}"
 }

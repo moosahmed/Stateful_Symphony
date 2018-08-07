@@ -10,11 +10,8 @@ resource "aws_route_table" "public-rt" {
 
   tags {
     KubernetesCluster = "${var.k8s_cluster}"
-    Name              = "${terraform.workspace}-public-rt"
+    Name              = "${terraform.workspace}"
     Environment       = "${terraform.workspace}"
-    Type              = "public"
-    "kubernetes.io/cluster/${var.k8s_cluster}" = "owned"
-    "kubernetes.io/kops/role"                  = "public"
   }
 }
 

@@ -5,7 +5,8 @@ variable "aws_region" {
 
 variable "k8s_cluster" {
   description = "Kubernetes cluster to deploy"
-  default     = "symph-cluster.k8s.local"
+  default     = "symph-cluster"
+  type        = "string"
 }
 
 variable "s3_bucket_name" {

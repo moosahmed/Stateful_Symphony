@@ -33,30 +33,38 @@ variable "node_instance_type" {
   description = "instance type for the worker instance"
 }
 
-## Instance Profiles
-variable "master_iam_instance_profile_id" {
-  description = "ID for the master iam instance profile"
-}
+//## Instance Profiles
+//variable "master_iam_instance_profile_id" {
+//  description = "ID for the master iam instance profile"
+//}
 
 variable "node_iam_instance_profile_id" {
   description = "ID for the node iam instance profile"
 }
 
 
-## Volume Types
-variable "master_volume_type" {
-  description = "Type of volume for the master node"
-}
+//## Volume Types
+//variable "master_volume_type" {
+//  description = "Type of volume for the master node"
+//}
 
 variable "node_volume_type" {
   description = "Type of volume for the worker node"
 }
 
-## Volume Sizes
-variable "master_volume_size" {
-  description = "Size of volume for the master node"
-}
+//## Volume Sizes
+//variable "master_volume_size" {
+//  description = "Size of volume for the master node"
+//}
 
 variable "node_volume_size" {
   description = "Size of volume for the worker node"
 }
+
+//variable "eks_cluster_cert_auth_0data" {
+//  description = ""
+//}
+//
+//variable "eks_cluster_endpoint" {
+//  description = ""
+//}

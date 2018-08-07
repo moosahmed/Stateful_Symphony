@@ -7,7 +7,7 @@ variable "k8s_cluster" {
 variable "vpc_cidr_prefix" {
   type = "map"
   default = {
-    "dev" = "10.1"
+    "dev" = "10.0"
     "tqa" = "10.2"
     "stg" = "10.3"
     "prd" = "10.10"
