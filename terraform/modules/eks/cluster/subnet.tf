@@ -18,6 +18,7 @@ resource "aws_subnet" "public-subnet" {
 
 ## Route table associations
 resource "aws_route_table_association" "public-subnet" {
+  count = 2
 
   subnet_id      = "${aws_subnet.public-subnet.*.id[count.index]}"
   route_table_id = "${var.public_rt_id}"

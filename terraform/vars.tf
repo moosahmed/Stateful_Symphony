@@ -5,7 +5,7 @@ variable "aws_region" {
 
 variable "k8s_cluster" {
   description = "Kubernetes cluster to deploy"
-  default     = "symph-cluster"
+  default     = "eks-cluster"
   type        = "string"
 }
 
