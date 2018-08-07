@@ -111,10 +111,3 @@ module "eks_cluster" {
 
   public_rt_id    = "${module.route_table_network.public_rt_id}"
 }
-
-module "ebs_volume" {
-  source      = "./modules/volume/ebs/"
-
-  aws_region  = "${var.aws_region}"
-  k8s_cluster = "${var.k8s_cluster}"
-}

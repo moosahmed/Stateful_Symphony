@@ -1,5 +1,5 @@
 resource "aws_key_pair" "kubernetes" {
-  key_name   = "kubernetes.symph-cluster.k8s.local-88:57:e2:61:76:4b:d1:f9:97:07:f0:54:f0:72:05:f8"
+  key_name   = "pub_key"
   public_key = "${file("${path.root}/data/aws_key_pair_public_key")}"
 }
 
