@@ -27,3 +27,8 @@ variable "vpc_cidr_prefix" {
 variable "public_rt_id" {
   description = "ID of the Public Route Table"
 }
+
+## Launch Config
+variable "node_launch_config_id" {
+  description = "ID of the Launch Configuration for the worker node"
+}
