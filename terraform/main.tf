@@ -98,7 +98,7 @@ module "eks_cluster" {
 }
 
 module "k8s_config_map" {
-  source = "./modules/k8s/config_map"
+  source            = "./modules/k8s/config_map"
 
   node_iam_role_arn = "${module.iam_global.iam_role_node_arn}"
 }

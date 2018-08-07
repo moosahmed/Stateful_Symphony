@@ -20,7 +20,7 @@ Organizations isolate stateless workloads in containers from thier stateful work
 
 This solution will be able to handle updates to your service stack(including stateful workloads) residing in contianers with continuous delivery. Terraform will be used in the "Deploy" step to deploy the latest Docker image built in the "Build" step with zero-downtime, in an automated fashion, even if the new image requires a schema update of your stateful service.
 
-## Solution Approach
+## Plan of Action
 Automate Infrastructure using Infrastructure as Code (IaC) Orchestration and Containerization. Use Jenkins to Implement Continous Integration/Continous Deployment(CI/CD) with a focus on blue - green deployment. 
 
 The Approach focuses on three tenants:
@@ -61,6 +61,11 @@ As part of a CI/CD pipeline deploy updated Docker images for the services once s
 1. Test impact of Docker update and roll back to a previous version
 2. Some Monitoring/Observability
 
+## Prerequisites
+
+1. AWS account - credentials set up properly (AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY should be in your .profile)
+2. Terraform
+3. aws-iam-authenticator : https://github.com/kubernetes-sigs/aws-iam-authenticator
 
 ## References
 1. https://mesosphere.com/blog/stateful-services-black-sheep-container-world/
