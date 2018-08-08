@@ -57,3 +57,7 @@ output "config_map_aws_auth" {
 output "kubeconfig" {
   value = "${local.kubeconfig}"
 }
+
+output "nginx_pod_lb" {
+  value = "${module.k8s_pods.lb_ip}"
+}
