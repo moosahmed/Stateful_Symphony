@@ -95,7 +95,7 @@ resource "kubernetes_pod" "spark-driver" {
   "spec" {
     container {
       name = "${var.spark_user_name}-spark-driver"
-      image = "komodohealth/docker-spark-driver:1.4.0"
+      image = "guangyang/docker-spark-driver:latest"
       command = ["/run-ipynb.sh"]
       env {
         name = "TERM"
@@ -129,86 +129,78 @@ resource "kubernetes_pod" "spark-driver" {
         name = "SPARK_MASTER_DNS"
         value = "${var.spark_user_name}-spark"
       }
-      env {
-        name = "MUDRAKER_SERVICE_HOST"
-        value = "staging-mudraker.khinternal.net"
-      }
-      env {
-        name = "MUDRAKER_SERVICE_PORT"
-        value = "80"
-      }
-      env {
-        name = "METRICS_SERVICE_HOST"
-        value = "staging-metrics.khinternal.net"
-      }
-      env {
-        name = "METRICS_SERVICE_PORT"
-        value = "80"
-      }
-      resources {
-        requests {
-          cpu = "1300m"
-          memory = "4000Mi"
-        }
-      }
-      volume_mount {
-        mount_path = "/home/dev/airflow_config"
-        name = "airflow-config-vol"
-        read_only = false
-      }
-      volume_mount {
-        mount_path = "/home/dev/.aws"
-        name = "boto-vol"
-        read_only = false
-      }
-      volume_mount {
-        mount_path = "/usr/spark/conf"
-        name = "spark-conf-vol"
-        read_only = false
-      }
-      volume_mount {
-        mount_path = "/efs"
-        name = "dev-pv"
-        read_only = false
-      }
-      volume_mount {
-        mount_path = "/home/dev/.ssh"
-        name = "deploy-vol"
-        read_only = false
-      }
-    }
-    volume {
-      name = "airflow-config-vol"
-      secret {
-        secret_name = "airflow-config-secret"
-      }
-    }
-    volume {
-      name = "boto-vol"
-      secret {
-        secret_name = "boto-secret"
-      }
-    }
-    volume {
-      name = "spark-conf-vol"
-      secret {
-        secret_name = "spark-conf-secret"
-      }
-    }
-    volume {
-      name = "dev-pv"
-      persistent_volume_claim {
-        claim_name = "pvc-kube-efs"
-      }
-    }
-    volume {
-      name = deploy-vol
-      secret {
-        secret_name = "deploy-secret"
-      }
-    }
-    node_selector {
-      user = "${var.spark_user_name}"
     }
   }
 }
+//      env {
+//        name = "MUDRAKER_SERVICE_HOST"
+//        value = "staging-mudraker.khinternal.net"
+//      }
+//      env {
+//        name = "MUDRAKER_SERVICE_PORT"
+//        value = "80"
+//      }
+//      env {
+//        name = "METRICS_SERVICE_HOST"
+//        value = "staging-metrics.khinternal.net"
+//      }
+//      env {
+//        name = "METRICS_SERVICE_PORT"
+//        value = "80"
+//      }
+//      resources {
+//        requests {
+//          cpu = "1300m"
+//          memory = "4000Mi"
+//        }
+//      }
+//      volume_mount {
+//        mount_path = "/home/dev/airflow_config"
+//        name = "airflow-config-vol"
+//        read_only = false
+//      }
+//      volume_mount {
+//        mount_path = "/home/dev/.aws"
+//        name = "boto-vol"
+//        read_only = false
+//      }
+//      volume_mount {
+//        mount_path = "/usr/spark/conf"
+//        name = "spark-conf-vol"
+//        read_only = false
+//      }
+//      volume_mount {
+//        mount_path = "/home/dev/.ssh"
+//        name = "deploy-vol"
+//        read_only = false
+//      }
+//    }
+//    volume {
+//      name = "airflow-config-vol"
+//      secret {
+//        secret_name = "airflow-config-secret"
+//      }
+//    }
+//    volume {
+//      name = "boto-vol"
+//      secret {
+//        secret_name = "boto-secret"
+//      }
+//    }
+//    volume {
+//      name = "spark-conf-vol"
+//      secret {
+//        secret_name = "spark-conf-secret"
+//      }
+//    }
+//    volume {
+//      name = "deploy-vol"
+//      secret {
+//        secret_name = "deploy-secret"
+//      }
+//    }
+//    node_selector {
+//      user = "${var.spark_user_name}"
+//    }
+//  }
+//}
