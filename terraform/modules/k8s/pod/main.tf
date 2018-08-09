@@ -1,54 +1,85 @@
-resource "kubernetes_replication_controller" "nginx" {
-  metadata {
-    name = "scalable-nginx-example"
+resource "kubernetes_pod" "spark-master" {
+  metadata{
+    name = "${var.spark_user_name}-spark"
     labels {
-      App = "ScalableNginxExample"
+      name = "${var.spark_user_name}-spark-master"
+      owner = "${var.spark_user_name}"
     }
   }
-
   spec {
-    replicas = 2
-    selector {
-      App = "ScalableNginxExample"
-    }
-    template {
-      container {
-        image = "nginx:1.7.8"
-        name  = "example"
-
-        port {
-          container_port = 80
-        }
-
-        resources {
-          limits {
-            cpu    = "0.5"
-            memory = "512Mi"
-          }
-          requests {
-            cpu    = "250m"
-            memory = "50Mi"
-          }
-        }
+    container {
+      image = "guangyang/docker-spark:latest"
+      name  = "${var.spark_user_name}-spark"
+      command = ["/bin/bash", "-c", "/start-master.sh ${var.spark_user_name}"]
+      env {
+        name = "SPARK_MASTER_PORT"
+        value = "7077"
+      }
+      env {
+        name = "SPARK_MASTER_WEBUI_PORT"
+        value = "8080"
+      }
+      port {
+        container_port = 7077
+        protocol = "TCP"
+      }
+      port {
+        container_port = 8080
+        protocol = "TCP"
       }
     }
   }
 }
 
-
-resource "kubernetes_service" "nginx" {
-  metadata {
-    name = "nginx-example"
+resource "kubernetes_service" "spark-master-service" {
+  "metadata" {
+    name = "${var.spark_user_name}-spark"
+    labels {
+      name = "${var.spark_user_name}-spark"
+      owner = "${var.spark_user_name}"
+    }
   }
-  spec {
+  "spec" {
     selector {
-      App = "${kubernetes_replication_controller.nginx.metadata.0.labels.App}"
+      name = "${kubernetes_pod.spark-master.metadata.0.labels.name}"
     }
     port {
-      port = 80
-      target_port = 80
+      name = "data-port"
+      port = 7077
+      target_port = "7077"
     }
+    port {
+      name = "ui-port"
+      port = 8080
+      target_port = "8080"
+    }
+  }
+}
 
-    type = "LoadBalancer"
+resource "kubernetes_replication_controller" "spark-worker-rc" {
+  "metadata" {
+    name = "${var.spark_user_name}-spark-worker-controller"
+    labels {
+      name = "${var.spark_user_name}-spark-worker"
+      uses = "${var.spark_user_name}-spark"
+      owner = "${var.spark_user_name}"
+    }
+  }
+  "spec" {
+    replicas = 2
+    "selector" {
+      name = "${var.spark_user_name}-spark-worker"
+    }
+    "template" {
+      container {
+        name = "${var.spark_user_name}-spark-worker"
+        image = "guangyang/docker-spark:latest"
+        command = ["/bin/bash", "-c", "/start-worker.sh spark://${var.spark_user_name}-spark:7077"]
+        port {
+          host_port = 8888
+          container_port = 8888
+        }
+      }
+    }
   }
 }

@@ -105,4 +105,5 @@ module "k8s_config_map" {
 
 module "k8s_pods" {
   source = "./modules/k8s/pod"
+  spark_user_name = "symph"
 }
