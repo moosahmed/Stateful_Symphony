@@ -96,7 +96,7 @@ resource "kubernetes_pod" "spark-driver" {
     container {
       name = "${var.spark_user_name}-spark-driver"
       image = "guangyang/docker-spark-driver:latest"
-      command = ["/run-ipynb.sh"]
+      command = ["tail -f /etc/host"]
       env {
         name = "TERM"
         value = "linux"
@@ -105,18 +105,18 @@ resource "kubernetes_pod" "spark-driver" {
         name = "HOME"
         value = "/home/dev"
       }
-      env {
-        name = "PYTHONPATH"
-        value = "/home/dev/plushy"
-      }
-      env {
-        name = "RUNNING_DAGS_FOLDER"
-        value = "/home/dev/dagger/dagger/dags/running"
-      }
-      env {
-        name = "PLUSHY_VERSION"
-        value = "1.6"
-      }
+//      env {
+//        name = "PYTHONPATH"
+//        value = "/home/dev/plushy"
+//      }
+//      env {
+//        name = "RUNNING_DAGS_FOLDER"
+//        value = "/home/dev/dagger/dagger/dags/running"
+//      }
+//      env {
+//        name = "PLUSHY_VERSION"
+//        value = "1.6"
+//      }
       env {
         name = "SPARK_DRIVER_MEMORY"
         value = "3g"
@@ -129,31 +129,12 @@ resource "kubernetes_pod" "spark-driver" {
         name = "SPARK_MASTER_DNS"
         value = "${var.spark_user_name}-spark"
       }
-    }
-  }
-}
-//      env {
-//        name = "MUDRAKER_SERVICE_HOST"
-//        value = "staging-mudraker.khinternal.net"
-//      }
-//      env {
-//        name = "MUDRAKER_SERVICE_PORT"
-//        value = "80"
-//      }
-//      env {
-//        name = "METRICS_SERVICE_HOST"
-//        value = "staging-metrics.khinternal.net"
-//      }
-//      env {
-//        name = "METRICS_SERVICE_PORT"
-//        value = "80"
-//      }
-//      resources {
-//        requests {
-//          cpu = "1300m"
-//          memory = "4000Mi"
-//        }
-//      }
+      resources {
+        requests {
+          cpu = "1300m"
+          memory = "4000Mi"
+        }
+      }
 //      volume_mount {
 //        mount_path = "/home/dev/airflow_config"
 //        name = "airflow-config-vol"
@@ -174,25 +155,25 @@ resource "kubernetes_pod" "spark-driver" {
 //        name = "deploy-vol"
 //        read_only = false
 //      }
-//    }
-//    volume {
-//      name = "airflow-config-vol"
-//      secret {
-//        secret_name = "airflow-config-secret"
-//      }
-//    }
-//    volume {
-//      name = "boto-vol"
-//      secret {
-//        secret_name = "boto-secret"
-//      }
-//    }
-//    volume {
-//      name = "spark-conf-vol"
-//      secret {
-//        secret_name = "spark-conf-secret"
-//      }
-//    }
+    }
+////    volume {
+////      name = "airflow-config-vol"
+////      secret {
+////        secret_name = "airflow-config-secret"
+////      }
+////    }
+////    volume {
+////      name = "boto-vol"
+////      secret {
+////        secret_name = "boto-secret"
+////      }
+////    }
+////    volume {
+////      name = "spark-conf-vol"
+////      secret {
+////        secret_name = "spark-conf-secret"
+////      }
+////    }
 //    volume {
 //      name = "deploy-vol"
 //      secret {
@@ -202,5 +183,5 @@ resource "kubernetes_pod" "spark-driver" {
 //    node_selector {
 //      user = "${var.spark_user_name}"
 //    }
-//  }
-//}
+  }
+}
