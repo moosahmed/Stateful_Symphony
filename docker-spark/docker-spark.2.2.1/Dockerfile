@@ -12,5 +12,8 @@ RUN curl -s https://bootstrap.pypa.io/get-pip.py > get-pip.py \
 ADD pip-requirements.txt /home/dev/pip-requirements.txt
 RUN pip install -r /home/dev/pip-requirements.txt
 
-COPY master.sh worker.sh /
-RUN chmod a+rx /master.sh /worker.sh
+COPY master.sh /
+RUN chmod a+rx /master.sh
+
+COPY worker.sh /
+RUN chmod a+rx /worker.sh

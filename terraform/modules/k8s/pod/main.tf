@@ -8,11 +8,11 @@ resource "kubernetes_pod" "spark-master" {
   }
   spec {
     container {
-      image = "moosahmed/docker-spark:2.2.1"
+      image = "moosahmed/docker-spark-2.2.1:latest"
       name  = "${var.spark_user_name}-spark"
       command = ["/bin/bash","-c"]
-//      args = ["git clone https://github.com/CCInCharge/campsite-hot-or-not.git; apt-get update && apt-get -y install python3 && python3 get-pip.py && pip install --upgrade pip && pip install -r campsite-hot-or-not/batch/requirements.txt; tail -f /etc/hosts"]
-      args = ["chmod a+rx /master.sh && /master.sh ${var.spark_user_name}"]
+      args = ["/master.sh ${var.spark_user_name}"]
+
       env {
         name = "SPARK_MASTER_PORT"
         value = "7077"
@@ -84,9 +84,9 @@ resource "kubernetes_replication_controller" "spark-worker-rc" {
     "template" {
       container {
         name = "${var.spark_user_name}-spark-worker"
-        image = "moosahmed/docker-spark:2.2.1"
+        image = "moosahmed/docker-spark-2.2.1:latest"
         command = ["/bin/bash", "-c"]
-        args = ["chmod a+rx /worker.sh && /worker.sh spark://${var.spark_user_name}-spark:7077"]
+        args = ["/worker.sh spark://${var.spark_user_name}-spark:7077"]
         env {
           name = "SPARK_WORKER_WEBUI_PORT"
           value = "8081"
