@@ -1,5 +1,5 @@
 #! /bin/bash
 
-tag=1.1.0
-docker build -t moosahmed/docker-spark:${tag} .
-docker push moosahmed/docker-spark:${tag}
+tag=latest
+docker build -t moosahmed/docker-spark-2.2.1:${tag} .
+docker push moosahmed/docker-spark-2.2.1:${tag}
