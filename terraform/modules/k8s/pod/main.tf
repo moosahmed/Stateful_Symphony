@@ -8,11 +8,11 @@ resource "kubernetes_pod" "spark-master" {
   }
   spec {
     container {
-      image = "guangyang/docker-spark:latest"
+      image = "moosahmed/docker-spark:2.2.1"
       name  = "${var.spark_user_name}-spark"
       command = ["/bin/bash","-c"]
-      args = ["git clone https://github.com/CCInCharge/campsite-hot-or-not.git; apt-get update && apt-get -y install python3 && python3 get-pip.py && pip install --upgrade pip && pip install -r campsite-hot-or-not/batch/requirements.txt && /start-master.sh ${var.spark_user_name}"]
-//      args = ["/start-master.sh ${var.spark_user_name}"]
+//      args = ["git clone https://github.com/CCInCharge/campsite-hot-or-not.git; apt-get update && apt-get -y install python3 && python3 get-pip.py && pip install --upgrade pip && pip install -r campsite-hot-or-not/batch/requirements.txt; tail -f /etc/hosts"]
+      args = ["/master.sh ${var.spark_user_name}"]
       env {
         name = "SPARK_MASTER_PORT"
         value = "7077"
@@ -27,6 +27,10 @@ resource "kubernetes_pod" "spark-master" {
       }
       port {
         container_port = 8080
+        protocol = "TCP"
+      }
+      port {
+        container_port = 6066
         protocol = "TCP"
       }
     }
@@ -55,6 +59,11 @@ resource "kubernetes_service" "spark-master-service" {
       port = 8080
       target_port = "8080"
     }
+    port {
+      name = "ex-port"
+      port = 6066
+      target_port = "6066"
+    }
   }
 }
 
@@ -75,9 +84,9 @@ resource "kubernetes_replication_controller" "spark-worker-rc" {
     "template" {
       container {
         name = "${var.spark_user_name}-spark-worker"
-        image = "guangyang/docker-spark:latest"
+        image = "moosahmed/docker-spark:1.1.0"
         command = ["/bin/bash", "-c"]
-        args = ["git clone https://github.com/CCInCharge/campsite-hot-or-not.git; apt-get update && apt-get -y install python3 && python3 get-pip.py && pip install --upgrade pip && pip install -r campsite-hot-or-not/batch/requirements.txt && /start-worker.sh spark://${var.spark_user_name}-spark:7077"]
+        args = ["/start-worker.sh spark://${var.spark_user_name}-spark:7077"]
         port {
           host_port = 8888
           container_port = 8888
