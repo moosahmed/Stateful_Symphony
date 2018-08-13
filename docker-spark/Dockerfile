@@ -5,6 +5,7 @@ MAINTAINER Moosa Ahmed <moosahmed14@gmail.com>
 ENV SPARK_MASTER_LOG /spark/logs
 ENV SPARK_WORKER_LOG /spark/logs
 ENV SPARK_HOME /spark
+ENV PYSPARK_PYTHON /usr/bin/python3
 
 # Get most up to date pip
 RUN curl -s https://bootstrap.pypa.io/get-pip.py > get-pip.py \
