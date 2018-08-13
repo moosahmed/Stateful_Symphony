@@ -115,7 +115,7 @@ resource "kubernetes_replication_controller" "spark-worker-rc" {
 //  "spec" {
 //    container {
 //      name = "${var.spark_user_name}-spark-driver"
-//      image = "guangyang/docker-spark-driver:latest"
+//      image = "moosahmed/docker-spark-2.2.1:latest"
 //      command = ["tail -f /etc/hosts"]
 //      env {
 //        name = "TERM"
@@ -125,18 +125,10 @@ resource "kubernetes_replication_controller" "spark-worker-rc" {
 //        name = "HOME"
 //        value = "/home/dev"
 //      }
-////      env {
-////        name = "PYTHONPATH"
-////        value = "/home/dev/plushy"
-////      }
-////      env {
-////        name = "RUNNING_DAGS_FOLDER"
-////        value = "/home/dev/dagger/dagger/dags/running"
-////      }
-////      env {
-////        name = "PLUSHY_VERSION"
-////        value = "1.6"
-////      }
+//      env {
+//        name = "SPARK_HOME"
+//        value = "/spark"
+//      }
 //      env {
 //        name = "SPARK_DRIVER_MEMORY"
 //        value = "3g"
@@ -155,53 +147,6 @@ resource "kubernetes_replication_controller" "spark-worker-rc" {
 //          memory = "4000Mi"
 //        }
 //      }
-////      volume_mount {
-////        mount_path = "/home/dev/airflow_config"
-////        name = "airflow-config-vol"
-////        read_only = false
-////      }
-////      volume_mount {
-////        mount_path = "/home/dev/.aws"
-////        name = "boto-vol"
-////        read_only = false
-////      }
-////      volume_mount {
-////        mount_path = "/usr/spark/conf"
-////        name = "spark-conf-vol"
-////        read_only = false
-////      }
-////      volume_mount {
-////        mount_path = "/home/dev/.ssh"
-////        name = "deploy-vol"
-////        read_only = false
-////      }
 //    }
-//////    volume {
-//////      name = "airflow-config-vol"
-//////      secret {
-//////        secret_name = "airflow-config-secret"
-//////      }
-//////    }
-//////    volume {
-//////      name = "boto-vol"
-//////      secret {
-//////        secret_name = "boto-secret"
-//////      }
-//////    }
-//////    volume {
-//////      name = "spark-conf-vol"
-//////      secret {
-//////        secret_name = "spark-conf-secret"
-//////      }
-//////    }
-////    volume {
-////      name = "deploy-vol"
-////      secret {
-////        secret_name = "deploy-secret"
-////      }
-////    }
-////    node_selector {
-////      user = "${var.spark_user_name}"
-////    }
 //  }
 //}

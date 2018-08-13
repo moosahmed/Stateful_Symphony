@@ -4,6 +4,7 @@ MAINTAINER Moosa Ahmed <moosahmed14@gmail.com>
 
 ENV SPARK_MASTER_LOG /spark/logs
 ENV SPARK_WORKER_LOG /spark/logs
+ENV SPARK_HOME /spark
 
 # Get most up to date pip
 RUN curl -s https://bootstrap.pypa.io/get-pip.py > get-pip.py \
@@ -17,3 +18,6 @@ RUN chmod a+rx /master.sh
 
 COPY worker.sh /
 RUN chmod a+rx /worker.sh
+
+RUN . "/spark/sbin/spark-config.sh"
+RUN . "/spark/bin/load-spark-env.sh"

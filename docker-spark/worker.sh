@@ -9,13 +9,7 @@ fi
 
 echo "Starting worker, will connect to: ${SPARK_MASTER}"
 
-. "/spark/sbin/spark-config.sh"
-
-. "/spark/bin/load-spark-env.sh"
-
 mkdir -p $SPARK_WORKER_LOG
-
-export SPARK_HOME=/spark
 
 ln -sf /dev/stdout $SPARK_WORKER_LOG/spark-worker.out
 
