@@ -107,3 +107,7 @@ module "k8s_spark" {
   source = "./modules/k8s/spark"
   spark_user_name = "symph"
 }
+
+module "k8s_c7a" {
+  source = "./modules/k8s/c7a"
+}
