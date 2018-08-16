@@ -66,7 +66,7 @@ resource "null_resource" "c7a-statefulset" {
     conifg_map = "${kubernetes_config_map.c7a-config.data.create_keyspaces}"
   }
   provisioner "local-exec" {
-    command = "echo '${data.template_file.deployment.rendered}' > /tmp/deployment.yaml && kubectl delete --kubeconfig=$HOME/.kube/config --ignore-not-found=true -f /tmp/deployment.yaml && kubectl apply --kubeconfig=$HOME/.kube/config -f /tmp/deployment.yaml"
+    command = "echo '${data.template_file.deployment.rendered}' > /tmp/deployment.yaml && kubectl delete --kubeconfig=$HOME/.kube/config --ignore-not-found=true -f /tmp/deployment.yaml && kubectl apply --kubeconfig=$HOME/.kube/config -f /tmp/deployment.yaml && sleep 60 && kubectl exec -it cassandra-0 -- cqlsh -f scripts/create_keyspaces"
   }
   depends_on = ["kubernetes_config_map.c7a-config"]
 }
@@ -86,7 +86,7 @@ resource "kubernetes_config_map" "c7a-config" {
 
       CREATE KEYSPACE IF NOT EXISTS campsites WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 2 };
 
-      CREATE TABLE weather_stations.readings (
+      CREATE TABLE IF NOT EXISTS weather_stations.readings (
         station_id varchar,
         measurement_time timestamp,
         lat float,
@@ -94,6 +94,17 @@ resource "kubernetes_config_map" "c7a-config" {
         temp float,
         PRIMARY KEY (station_id, measurement_time)
       ) WITH CLUSTERING ORDER BY (measurement_time DESC);
+
+      CREATE TABLE IF NOT EXISTS campsites.calculations (
+        campsite_id int,
+        calculation_time timestamp,
+        lat float,
+        lon float,
+        temp float,
+        name varchar,
+        PRIMARY KEY (campsite_id, calculation_time)
+      ) WITH CLUSTERING ORDER BY (calculation_time DESC);
   EOF
   }
+  depends_on = ["kubernetes_service.c7a-headless"]
 }

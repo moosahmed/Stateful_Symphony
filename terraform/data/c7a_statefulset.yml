@@ -17,7 +17,6 @@ spec:
       - name: cassandra
         image: cassandra:3
         imagePullPolicy: IfNotPresent
-        command: ["cqlsh", "-f", "scripts/create_keyspaces"]
         ports:
         - containerPort: 7000
           name: intra-node
