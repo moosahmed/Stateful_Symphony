@@ -30,3 +30,13 @@ pip install -r requirements.txt
 #--master spark://$SPARK_MASTER_DNS:7077
 
 "git clone https://github.com/CCInCharge/campsite-hot-or-not.git; apt-get update && apt-get -y install python3 && python3 get-pip.py && pip install --upgrade pip && pip install -r campsite-hot-or-not/batch/requirements.txt && /start-worker.sh
+
+//      CREATE TABLE campsites.calculations (
+//        campsite_id int,
+//        calculation_time timestamp,
+//        lat float,
+//        lon float,
+//        temp float,
+//        name varchar,
+//        PRIMARY KEY (campsite_id, calculation_time)
+//      ) WITH CLUSTERING ORDER BY (calculation_time DESC);

@@ -62,28 +62,26 @@ resource "kubernetes_persistent_volume" "c7a-data-2" {
 }
 
 resource "null_resource" "c7a-statefulset" {
-  provisioner "local-exec" {
-    command = "echo '${data.template_file.deployment.rendered}' > /tmp/deployment.yaml && kubectl create --kubeconfig=$HOME/.kube/config -f /tmp/deployment.yaml"
+  triggers {
+    conifg_map = "${kubernetes_config_map.c7a-config.data.create_keyspaces}"
   }
-  depends_on = ["kubernetes_service.c7a-headless"]
+  provisioner "local-exec" {
+    command = "echo '${data.template_file.deployment.rendered}' > /tmp/deployment.yaml && kubectl delete --kubeconfig=$HOME/.kube/config --ignore-not-found=true -f /tmp/deployment.yaml && kubectl apply --kubeconfig=$HOME/.kube/config -f /tmp/deployment.yaml"
+  }
+  depends_on = ["kubernetes_config_map.c7a-config"]
 }
 
 data "template_file" "deployment" {
   template = "${file("${path.root}/data/c7a_statefulset.yml")}"
-
-  //  vars {
-  //    NAMESPACE                     = "${var.namespace}"
-  //    DB_HOST                       = "${var.db_host}"
-  //    DB_PORT                       = "${var.db_port}"
-  //  }
 }
 
 resource "kubernetes_config_map" "c7a-config" {
   "metadata" {
-    name = c7a-config
+    name = "c7a-config"
   }
   data {
-    create_keyspaces.cql: |-
+    create_keyspaces = <<EOF
+
       CREATE KEYSPACE IF NOT EXISTS weather_stations WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 2 };
 
       CREATE KEYSPACE IF NOT EXISTS campsites WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 2 };
@@ -96,15 +94,6 @@ resource "kubernetes_config_map" "c7a-config" {
         temp float,
         PRIMARY KEY (station_id, measurement_time)
       ) WITH CLUSTERING ORDER BY (measurement_time DESC);
-
-      CREATE TABLE campsites.calculations (
-        campsite_id int,
-        calculation_time timestamp,
-        lat float,
-        lon float,
-        temp float,
-        name varchar,
-        PRIMARY KEY (campsite_id, calculation_time)
-      ) WITH CLUSTERING ORDER BY (calculation_time DESC);
+  EOF
   }
 }
