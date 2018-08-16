@@ -1,0 +1,28 @@
+{
+  "name": "nodeapp",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "bootstrap": "^4.0.0",
+    "c3": "^0.4.18",
+    "cassandra-driver": "^3.3.0",
+    "cookie-parser": "~1.4.3",
+    "d3": "^3.5.17",
+    "debug": "~2.6.9",
+    "dotenv": "^4.0.0",
+    "express": "~4.15.5",
+    "gmaps-marker-clusterer": "^1.2.2",
+    "hbs": "~4.0.1",
+    "jquery": "^3.3.1",
+    "moment": "^2.20.1",
+    "moment-timezone": "^0.5.14",
+    "morgan": "~1.9.0",
+    "popper.js": "^1.12.9",
+    "request": "^2.83.0",
+    "serve-favicon": "~2.4.5"
+  }
+}

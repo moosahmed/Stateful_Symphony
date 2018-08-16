@@ -1,0 +1,1 @@
+DEBUG=nodeapp:* npm start
