@@ -126,7 +126,8 @@ resource "kubernetes_pod" "spark-driver" {
       name = "${var.spark_user_name}-spark-driver"
       image = "moosahmed/docker-spark-2.2.1:latest"
       command = ["/bin/bash", "-c"]
-      args = ["git clone https://github.com/moosahmed/campsite-hot-or-not.git && cd campsite-hot-or-not/batch/ && spark-submit --packages com.amazonaws:aws-java-sdk:1.7.4,org.apache.hadoop:hadoop-aws:2.7.2,com.datastax.spark:spark-cassandra-connector_2.11:2.0.5 raw_noaa_batch_s3.py"]
+//      args = ["git clone https://github.com/moosahmed/campsite-hot-or-not.git && cd campsite-hot-or-not/batch/ && spark-submit --packages com.amazonaws:aws-java-sdk:1.7.4,org.apache.hadoop:hadoop-aws:2.7.2,com.datastax.spark:spark-cassandra-connector_2.11:2.0.5 raw_noaa_batch_s3.py"]
+      args = ["git clone https://github.com/moosahmed/campsite-hot-or-not.git && cd campsite-hot-or-not/batch/ && spark-submit raw_noaa_batch_s3.py"]
       env {
         name = "TERM"
         value = "linux"
@@ -150,6 +151,10 @@ resource "kubernetes_pod" "spark-driver" {
       env {
         name = "SPARK_MASTER_DNS"
         value = "${var.spark_user_name}-spark"
+      }
+      port {
+        container_port = 9042
+        protocol = "TCP"
       }
       resources {
         requests {
