@@ -92,7 +92,7 @@ resource "kubernetes_config_map" "c7a-config" {
 
       CREATE KEYSPACE IF NOT EXISTS campsites WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 2 };
 
-      CREATE TABLE IF NOT EXISTS weather_stations.readings (
+          CREATE TABLE IF NOT EXISTS weather_stations.readings (
         station_id varchar,
         measurement_time timestamp,
         lat float,
