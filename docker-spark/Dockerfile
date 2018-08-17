@@ -20,5 +20,7 @@ RUN chmod a+rx /master.sh
 COPY worker.sh /
 RUN chmod a+rx /worker.sh
 
+ADD spark-defaults.conf /spark/conf/
+
 RUN . "/spark/sbin/spark-config.sh"
 RUN . "/spark/bin/load-spark-env.sh"

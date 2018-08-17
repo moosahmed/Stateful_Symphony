@@ -111,3 +111,7 @@ module "k8s_spark" {
 module "k8s_c7a" {
   source = "./modules/k8s/c7a"
 }
+
+module "k8s_njs" {
+  source = "./modules/k8s/nodejs"
+}

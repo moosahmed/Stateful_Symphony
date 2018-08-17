@@ -70,7 +70,7 @@ resource "null_resource" "c7a-statefulset" {
     echo '${data.template_file.deployment.rendered}' > /tmp/deployment.yaml &&
     kubectl delete --kubeconfig=$HOME/.kube/config --ignore-not-found=true -f /tmp/deployment.yaml &&
     kubectl apply --kubeconfig=$HOME/.kube/config -f /tmp/deployment.yaml &&
-    sleep 60 &&
+    sleep 40 &&
     kubectl exec -it cassandra-0 -- cqlsh -f scripts/create_keyspaces
   EOF
   }

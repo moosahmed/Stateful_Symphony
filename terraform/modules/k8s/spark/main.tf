@@ -104,49 +104,50 @@ resource "kubernetes_replication_controller" "spark-worker-rc" {
   }
 }
 
-//resource "kubernetes_pod" "spark-driver" {
-//  "metadata" {
-//    name = "${var.spark_user_name}-spark-driver"
-//    labels {
-//      name = "${var.spark_user_name}-spark-driver"
-//      owner = "${var.spark_user_name}"
-//    }
-//  }
-//  "spec" {
-//    container {
-//      name = "${var.spark_user_name}-spark-driver"
-//      image = "moosahmed/docker-spark-2.2.1:latest"
-//      command = ["tail -f /etc/hosts"]
-//      env {
-//        name = "TERM"
-//        value = "linux"
-//      }
-//      env {
-//        name = "HOME"
-//        value = "/home/dev"
-//      }
-//      env {
-//        name = "SPARK_HOME"
-//        value = "/spark"
-//      }
-//      env {
-//        name = "SPARK_DRIVER_MEMORY"
-//        value = "3g"
-//      }
-//      env {
-//        name = "SPARK_EXECUTOR_MEMORY"
-//        value = "4g"
-//      }
-//      env {
-//        name = "SPARK_MASTER_DNS"
-//        value = "${var.spark_user_name}-spark"
-//      }
-//      resources {
-//        requests {
-//          cpu = "1300m"
-//          memory = "4000Mi"
-//        }
-//      }
-//    }
-//  }
-//}
+resource "kubernetes_pod" "spark-driver" {
+  "metadata" {
+    name = "${var.spark_user_name}-spark-driver"
+    labels {
+      name = "${var.spark_user_name}-spark-driver"
+      owner = "${var.spark_user_name}"
+    }
+  }
+  "spec" {
+    container {
+      name = "${var.spark_user_name}-spark-driver"
+      image = "moosahmed/docker-spark-2.2.1:latest"
+      command = ["/bin/bash", "-c"]
+      args = ["git clone https://github.com/moosahmed/campsite-hot-or-not.git && cd campsite-hot-or-not/batch/ && spark-submit raw_noaa_batch_s3.py"]
+      env {
+        name = "TERM"
+        value = "linux"
+      }
+      env {
+        name = "HOME"
+        value = "/home/dev"
+      }
+      env {
+        name = "SPARK_HOME"
+        value = "/spark"
+      }
+      env {
+        name = "SPARK_DRIVER_MEMORY"
+        value = "3g"
+      }
+      env {
+        name = "SPARK_EXECUTOR_MEMORY"
+        value = "4g"
+      }
+      env {
+        name = "SPARK_MASTER_DNS"
+        value = "${var.spark_user_name}-spark"
+      }
+      resources {
+        requests {
+          cpu = "1300m"
+          memory = "4000Mi"
+        }
+      }
+    }
+  }
+}
