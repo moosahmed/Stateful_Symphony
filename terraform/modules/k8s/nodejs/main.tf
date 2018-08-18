@@ -7,20 +7,20 @@ resource "kubernetes_pod" "nodejs" {
   }
   spec {
     container {
-      image = "moosahmed/docker-nodejs-8:latest"
+      image = "moosahmed/docker-nodejs-8:1.0"
       name  = "nodejs"
       command = ["/bin/bash","-c", "./start.sh"]
       env {
         name = "CASSANDRA_HOST1"
-        value = "10.0.1.95"
+        value = "10.0.1.187"
       }
       env {
         name = "CASSANDRA_HOST2"
-        value = "10.0.0.96"
+        value = "10.0.0.175"
       }
       env {
         name = "GOOGLE_MAPS_API_KEY"
-        value = "AIzaSyCAqXdRN7V8o_6lRJZlmX-jy237TVx5TkQ"
+        value = "AIzaSyCMpxfJ4SlUkk-7Cq2FazWxfjxnKxA-Sl4"
       }
       port {
         container_port = 3000

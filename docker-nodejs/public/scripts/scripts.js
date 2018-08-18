@@ -101,7 +101,7 @@ function initMap() {
   var campgrounds =  {};
 
   // Obtain campground locations
-  function loadJSON(callback) {   
+  function loadJSON(callback) {
     var xobj = new XMLHttpRequest();
     xobj.overrideMimeType("application/json");
     xobj.open('GET', '/campgrounds_info.json', true);
@@ -137,7 +137,7 @@ function initMap() {
       // weather data on click
       marker.addListener('click', function() {
         let date = $('#datetimepicker13').datetimepicker('date');
-        
+
         // JS Date objects have months indexed from 0 (0 to 11)
         let month = date.month() + 1;
         let day = date.date();
