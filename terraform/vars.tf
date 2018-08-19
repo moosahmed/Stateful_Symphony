@@ -9,7 +9,15 @@ variable "k8s_cluster" {
   type        = "string"
 }
 
-variable "s3_bucket_name" {
+variable "s3_bucket_url" {
   description = "Must be a globally unique bucket name across aws"
-  default = "symph.k8s.state"
+  default = "s3a://s.k8s.state/"
 }
+
+//variable "access_key" {
+//  description = "aws_access_key_id to be set in .tfvars file"
+//}
+//
+//variable "secret_key" {
+//  description = "aws_seceret_access_key to be set in .tfvars file"
+//}

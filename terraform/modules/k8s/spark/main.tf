@@ -117,7 +117,8 @@ resource "kubernetes_pod" "spark-driver" {
       name = "${var.spark_user_name}-spark-driver"
       image = "moosahmed/docker-spark-2.2.1:latest"
       command = ["/bin/bash", "-c"]
-      args = ["git clone https://github.com/moosahmed/campsite-hot-or-not.git && cd campsite-hot-or-not/batch/ && spark-submit raw_noaa_batch_s3.py"]
+      args = ["cat /spark/conf2/* && cp /spark/conf2/* /spark/conf/ && ls /spark/conf/"]
+//      args = ["cp /spark/conf2/* /spark/conf/ && git clone https://github.com/moosahmed/campsite-hot-or-not.git && cd campsite-hot-or-not/batch/ && spark-submit raw_noaa_batch_s3.py"]
       env {
         name = "TERM"
         value = "linux"
@@ -148,6 +149,87 @@ resource "kubernetes_pod" "spark-driver" {
           memory = "4000Mi"
         }
       }
+      volume_mount {
+        mount_path = "/spark/pyconf/"
+        name = "pycfg-volume"
+      }
+      volume_mount {
+        mount_path = "/spark/conf2/"
+        name = "s3cfg-volume"
+      }
     }
+    volume {
+      name = "pycfg-volume"
+      config_map {
+        name = "spark-config"
+      }
+    }
+    volume {
+      name = "s3cfg-volume"
+      config_map {
+        name = "s3-config"
+      }
+    }
+  }
+  depends_on = ["kubernetes_config_map.spark-config"]
+}
+
+resource "null_resource" "c7a" {
+  triggers {
+    c7a = "${var.c7a-ips_id}"
+  }
+}
+
+data "template_file" "c7a" {
+  template = "${file("${path.root}/data/cassandra-0-ip.txt")}"
+  depends_on = ["null_resource.c7a"]
+}
+
+resource "kubernetes_config_map" "spark-config" {
+  "metadata" {
+    name = "spark-config"
+  }
+  data {
+    s3_spark.cfg = <<EOF
+[s3]
+bucket_url: ${var.s3_bucket_url}
+object: *.txt
+
+[spark_cluster]
+nodes: localhost
+
+[cassandra_cluster]
+host: ${data.template_file.c7a.rendered}
+EOF
+  }
+  depends_on = ["data.template_file.c7a"]
+}
+
+resource "kubernetes_config_map" "s3-config" {
+  "metadata" {
+    name = "s3-config"
+  }
+  data {
+    hdfs-site.xml = <<EOF
+<?xml version="1.0"?>
+<configuration>
+<property>
+  <name>fs.s3a.access.key</name>
+  <value>${var.access_key}</value>
+</property>
+<property>
+  <name>fs.s3a.secret.key</name>
+  <value>${var.secret_key}</value>
+</property>
+<property>
+  <name>fs.s3n.awsAccessKeyId</name>
+  <value>${var.access_key}</value>
+</property>
+<property>
+  <name>fs.s3n.awsSecretAccessKey</name>
+  <value>${var.secret_key}</value>
+</property>
+</configuration>
+EOF
   }
 }

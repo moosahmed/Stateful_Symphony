@@ -103,13 +103,19 @@ module "k8s_config_map" {
   node_iam_role_arn = "${module.iam_global.iam_role_node_arn}"
 }
 
+module "k8s_c7a" {
+  source = "./modules/k8s/c7a"
+}
+
 module "k8s_spark" {
   source = "./modules/k8s/spark"
   spark_user_name = "symph"
-}
 
-module "k8s_c7a" {
-  source = "./modules/k8s/c7a"
+  access_key = "${}"
+  secret_key = "${var.secret_key}"
+
+  c7a-ips_id = "${module.k8s_c7a.c7a-ips_id}"
+  s3_bucket_url = "${var.s3_bucket_url}"
 }
 
 module "k8s_njs" {

@@ -13,3 +13,6 @@
 
 # Module directory
 .terraform/
+
+# Secrets
+*.tfvars*
