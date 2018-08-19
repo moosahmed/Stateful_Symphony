@@ -1,5 +1,5 @@
 resource "aws_key_pair" "kubernetes" {
-  key_name   = "pub_key"
+  key_name   = "pub_key.${var.k8s_cluster}"
   public_key = "${file("${path.root}/data/aws_key_pair_public_key")}"
 }
 
@@ -44,7 +44,7 @@ resource "aws_iam_instance_profile" "node" {
 }
 
 resource "aws_iam_group" "iam-group" {
-  name = "iam-group"
+  name = "iam-group.${var.k8s_cluster}"
 }
 
 resource "aws_iam_group_policy_attachment" "iam-group-ec2" {

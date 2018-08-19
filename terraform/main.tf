@@ -1,6 +1,8 @@
 provider "http" {}
 
 provider "aws" {
+//  access_key = "${var.access_key}"
+//  secret_key = "${var.secret_key}"
   region = "${var.aws_region}"
 }
 
@@ -111,7 +113,7 @@ module "k8s_spark" {
   source = "./modules/k8s/spark"
   spark_user_name = "symph"
 
-  access_key = "${}"
+  access_key = "${var.access_key}"
   secret_key = "${var.secret_key}"
 
   c7a-ips_id = "${module.k8s_c7a.c7a-ips_id}"

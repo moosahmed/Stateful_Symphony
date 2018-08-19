@@ -4,8 +4,7 @@ variable "aws_region" {
 }
 
 variable "k8s_cluster" {
-  description = "Kubernetes cluster to deploy"
-  default     = "ek8s-cluster"
+  description = "Kubernetes cluster to deploy; must be unique"
   type        = "string"
 }
 
@@ -14,10 +13,10 @@ variable "s3_bucket_url" {
   default = "s3a://s.k8s.state/"
 }
 
-//variable "access_key" {
-//  description = "aws_access_key_id to be set in .tfvars file"
-//}
-//
-//variable "secret_key" {
-//  description = "aws_seceret_access_key to be set in .tfvars file"
-//}
+variable "access_key" {
+  description = "In `terraform.tfvars` file: access_key = 'your_aws_access_key_id'. Make sure to gitignore your tfvars file"
+}
+
+variable "secret_key" {
+  description = "In `terraform.tfvars` file: access_key = 'your_aws_secret_access_key'. Make sure to gitignore your tfvars file"
+}

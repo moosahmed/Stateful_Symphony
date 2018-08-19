@@ -117,8 +117,7 @@ resource "kubernetes_pod" "spark-driver" {
       name = "${var.spark_user_name}-spark-driver"
       image = "moosahmed/docker-spark-2.2.1:latest"
       command = ["/bin/bash", "-c"]
-      args = ["cat /spark/conf2/* && cp /spark/conf2/* /spark/conf/ && ls /spark/conf/"]
-//      args = ["cp /spark/conf2/* /spark/conf/ && git clone https://github.com/moosahmed/campsite-hot-or-not.git && cd campsite-hot-or-not/batch/ && spark-submit raw_noaa_batch_s3.py"]
+      args = ["cp /spark/conf2/* /spark/conf/ && git clone https://github.com/moosahmed/campsite-hot-or-not.git && cd campsite-hot-or-not/batch/ && spark-submit raw_noaa_batch_s3.py"]
       env {
         name = "TERM"
         value = "linux"

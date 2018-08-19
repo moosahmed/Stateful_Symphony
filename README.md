@@ -63,9 +63,13 @@ As part of a CI/CD pipeline deploy updated Docker images for the services once s
 
 ## Prerequisites
 
-1. AWS account - credentials set up properly (AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY should be in your .profile)
-2. Terraform
+1. AWS account
+    1. IAM should have permissions for all resources used within.
+    2. Make sure to gitignore your terraform.tfvars before the step below.
+    3. Make a terraform.tfvars and provide access_key = "your_aws_access_key_id" secret_key = "your_aws_secret_access_key". (The environemnt variables were not used because the aws keys are used in multiple places - not just for the provider.)
+2. Install Terraform
 3. aws-iam-authenticator : https://github.com/kubernetes-sigs/aws-iam-authenticator
+4. Install kubectl
 
 ## References
 1. https://mesosphere.com/blog/stateful-services-black-sheep-container-world/
