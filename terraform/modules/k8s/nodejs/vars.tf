@@ -1,0 +1,1 @@
+variable "c7a-ips_id" {}

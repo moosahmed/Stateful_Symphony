@@ -114,4 +114,5 @@ module "k8s_c7a" {
 
 module "k8s_njs" {
   source = "./modules/k8s/nodejs"
+  c7a-ips_id = "${module.k8s_c7a.c7a-ips_id}"
 }
