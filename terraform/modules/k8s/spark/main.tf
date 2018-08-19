@@ -1,17 +1,17 @@
 resource "kubernetes_pod" "spark-master" {
   metadata{
-    name = "${var.spark_user_name}-spark"
+    name = "${terraform.workspace}-${var.spark_user_name}-spark"
     labels {
-      name = "${var.spark_user_name}-spark-master"
-      owner = "${var.spark_user_name}"
+      name = "${terraform.workspace}-${var.spark_user_name}-spark-master"
+      owner = "${terraform.workspace}-${var.spark_user_name}"
     }
   }
   spec {
     container {
       image = "moosahmed/docker-spark-2.2.1:latest"
-      name  = "${var.spark_user_name}-spark"
+      name  = "${terraform.workspace}-${var.spark_user_name}-spark"
       command = ["/bin/bash","-c"]
-      args = ["/master.sh ${var.spark_user_name}"]
+      args = ["/master.sh ${terraform.workspace}-${var.spark_user_name}"]
 
       env {
         name = "SPARK_MASTER_PORT"
@@ -39,10 +39,10 @@ resource "kubernetes_pod" "spark-master" {
 
 resource "kubernetes_service" "spark-master-service" {
   "metadata" {
-    name = "${var.spark_user_name}-spark"
+    name = "${terraform.workspace}-${var.spark_user_name}-spark"
     labels {
-      name = "${var.spark_user_name}-spark"
-      owner = "${var.spark_user_name}"
+      name = "${terraform.workspace}-${var.spark_user_name}-spark"
+      owner = "${terraform.workspace}-${var.spark_user_name}"
     }
   }
   "spec" {
@@ -69,24 +69,24 @@ resource "kubernetes_service" "spark-master-service" {
 
 resource "kubernetes_replication_controller" "spark-worker-rc" {
   "metadata" {
-    name = "${var.spark_user_name}-spark-worker-controller"
+    name = "${terraform.workspace}-${var.spark_user_name}-spark-worker-controller"
     labels {
-      name = "${var.spark_user_name}-spark-worker"
-      uses = "${var.spark_user_name}-spark"
-      owner = "${var.spark_user_name}"
+      name = "${terraform.workspace}-${var.spark_user_name}-spark-worker"
+      uses = "${terraform.workspace}-${var.spark_user_name}-spark"
+      owner = "${terraform.workspace}-${var.spark_user_name}"
     }
   }
   "spec" {
     replicas = 2
     "selector" {
-      name = "${var.spark_user_name}-spark-worker"
+      name = "${terraform.workspace}-${var.spark_user_name}-spark-worker"
     }
     "template" {
       container {
-        name = "${var.spark_user_name}-spark-worker"
+        name = "${terraform.workspace}-${var.spark_user_name}-spark-worker"
         image = "moosahmed/docker-spark-2.2.1:latest"
         command = ["/bin/bash", "-c"]
-        args = ["/worker.sh spark://${var.spark_user_name}-spark:7077"]
+        args = ["/worker.sh spark://${terraform.workspace}-${var.spark_user_name}-spark:7077"]
         env {
           name = "SPARK_WORKER_WEBUI_PORT"
           value = "8081"
@@ -106,15 +106,15 @@ resource "kubernetes_replication_controller" "spark-worker-rc" {
 
 resource "kubernetes_pod" "spark-driver" {
   "metadata" {
-    name = "${var.spark_user_name}-spark-driver"
+    name = "${terraform.workspace}-${var.spark_user_name}-spark-driver"
     labels {
-      name = "${var.spark_user_name}-spark-driver"
-      owner = "${var.spark_user_name}"
+      name = "${terraform.workspace}-${var.spark_user_name}-spark-driver"
+      owner = "${terraform.workspace}-${var.spark_user_name}"
     }
   }
   "spec" {
     container {
-      name = "${var.spark_user_name}-spark-driver"
+      name = "${terraform.workspace}-${var.spark_user_name}-spark-driver"
       image = "moosahmed/docker-spark-2.2.1:latest"
       command = ["/bin/bash", "-c"]
       args = ["cp /spark/conf2/* /spark/conf/ && git clone https://github.com/moosahmed/campsite-hot-or-not.git && cd campsite-hot-or-not/batch/ && spark-submit raw_noaa_batch_s3.py"]
@@ -140,7 +140,7 @@ resource "kubernetes_pod" "spark-driver" {
       }
       env {
         name = "SPARK_MASTER_DNS"
-        value = "${var.spark_user_name}-spark"
+        value = "${terraform.workspace}-${var.spark_user_name}-spark"
       }
       resources {
         requests {
@@ -180,13 +180,13 @@ resource "null_resource" "c7a" {
 }
 
 data "template_file" "c7a" {
-  template = "${file("${path.root}/data/cassandra-0-ip.txt")}"
+  template = "${file("${path.root}/data/${terraform.workspace}-cassandra-0-ip.txt")}"
   depends_on = ["null_resource.c7a"]
 }
 
 resource "kubernetes_config_map" "spark-config" {
   "metadata" {
-    name = "spark-config"
+    name = "${terraform.workspace}-spark-config"
   }
   data {
     s3_spark.cfg = <<EOF
@@ -195,7 +195,7 @@ bucket_url: ${var.s3_bucket_url}
 object: *.txt
 
 [spark_cluster]
-nodes: localhost
+nodes: 172.20.238.175
 
 [cassandra_cluster]
 host: ${data.template_file.c7a.rendered}
@@ -206,7 +206,7 @@ EOF
 
 resource "kubernetes_config_map" "s3-config" {
   "metadata" {
-    name = "s3-config"
+    name = "${terraform.workspace}-s3-config"
   }
   data {
     hdfs-site.xml = <<EOF

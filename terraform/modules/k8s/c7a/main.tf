@@ -1,8 +1,8 @@
 resource "kubernetes_service" "c7a-headless" {
   "metadata" {
-    name = "cassandra"
+    name = "${terraform.workspace}-cassandra"
     labels {
-      app = "cassandra"
+      app = "${terraform.workspace}-cassandra"
     }
   }
   "spec" {
@@ -12,17 +12,17 @@ resource "kubernetes_service" "c7a-headless" {
       name = "cql"
     }
     selector {
-      app = "cassandra"
+      app = "${terraform.workspace}-cassandra"
     }
   }
 }
 
 resource "kubernetes_persistent_volume" "c7a-data-1" {
   "metadata" {
-    name = "cassandra-data-1"
+    name = "${terraform.workspace}-cassandra-data-1"
     labels {
       type = "local"
-      app = "cassandra"
+      app = "${terraform.workspace}-cassandra"
     }
   }
   "spec" {
@@ -32,7 +32,7 @@ resource "kubernetes_persistent_volume" "c7a-data-1" {
     }
     "persistent_volume_source" {
       host_path {
-        path = "/tmp/data/cassandra-data-1"
+        path = "/tmp/data/${terraform.workspace}-cassandra-data-1"
       }
     }
     persistent_volume_reclaim_policy = "Recycle"
@@ -41,10 +41,10 @@ resource "kubernetes_persistent_volume" "c7a-data-1" {
 
 resource "kubernetes_persistent_volume" "c7a-data-2" {
   "metadata" {
-    name = "cassandra-data-2"
+    name = "${terraform.workspace}-cassandra-data-2"
     labels {
       type = "local"
-      app = "cassandra"
+      app = "${terraform.workspace}-cassandra"
     }
   }
   "spec" {
@@ -54,7 +54,7 @@ resource "kubernetes_persistent_volume" "c7a-data-2" {
     }
     "persistent_volume_source" {
       host_path {
-        path = "/tmp/data/cassandra-data-2"
+        path = "/tmp/data/${terraform.workspace}-cassandra-data-2"
       }
     }
     persistent_volume_reclaim_policy = "Recycle"
@@ -71,7 +71,7 @@ resource "null_resource" "c7a-statefulset" {
     kubectl delete --kubeconfig=$HOME/.kube/config --ignore-not-found=true -f /tmp/deployment.yaml &&
     kubectl apply --kubeconfig=$HOME/.kube/config -f /tmp/deployment.yaml &&
     sleep 60 &&
-    kubectl exec -it cassandra-0 -- cqlsh -f scripts/create_keyspaces
+    kubectl exec -it ${terraform.workspace}-cassandra-0 -- cqlsh -f scripts/create_keyspaces
   EOF
   }
   depends_on = ["kubernetes_config_map.c7a-config"]
@@ -79,11 +79,14 @@ resource "null_resource" "c7a-statefulset" {
 
 data "template_file" "deployment" {
   template = "${file("${path.root}/data/c7a_statefulset.yml")}"
+  vars {
+    tf_workspace = "${terraform.workspace}"
+  }
 }
 
 resource "kubernetes_config_map" "c7a-config" {
   "metadata" {
-    name = "c7a-config"
+    name = "${terraform.workspace}-c7a-config"
   }
   data {
     create_keyspaces = <<EOF
@@ -121,8 +124,8 @@ resource "null_resource" "c7a-ips" {
   }
   provisioner "local-exec" {
     command = <<EOF
-    kubectl get pod cassandra-0 -o json | jq -r '.status.podIP' | tr -d '\n' > "${path.root}/data/cassandra-0-ip.txt";
-    kubectl get pod cassandra-1 -o json | jq -r '.status.podIP' | tr -d '\n' > "${path.root}/data/cassandra-1-ip.txt";
+    kubectl get pod ${terraform.workspace}-cassandra-0 -o json | jq -r '.status.podIP' | tr -d '\n' > "${path.root}/data/${terraform.workspace}-cassandra-0-ip.txt";
+    kubectl get pod ${terraform.workspace}-cassandra-1 -o json | jq -r '.status.podIP' | tr -d '\n' > "${path.root}/data/${terraform.workspace}-cassandra-1-ip.txt";
   EOF
   }
   depends_on = ["null_resource.c7a-statefulset"]

@@ -9,7 +9,7 @@ resource "aws_iam_role_policy_attachment" "master-AmazonEKSServicePolicy" {
 }
 
 resource "aws_eks_cluster" "cluster" {
-  name     = "${var.k8s_cluster}"
+  name     = "${terraform.workspace}-${var.k8s_cluster}"
   role_arn = "${var.cluster_iam_role_arn}"
 
   vpc_config {

@@ -1,5 +1,5 @@
 resource "aws_autoscaling_group" "nodes" {
-  name                 = "nodes"
+  name                 = "${terraform.workspace}-nodes"
   launch_configuration = "${var.node_launch_config_id}"
   desired_capacity     = 2
   max_size             = 2

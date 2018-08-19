@@ -5,20 +5,20 @@ resource "null_resource" "c7a" {
 }
 
 data "template_file" "c7a-0" {
-  template = "${file("${path.root}/data/cassandra-0-ip.txt")}"
+  template = "${file("${path.root}/data/${terraform.workspace}-cassandra-0-ip.txt")}"
   depends_on = ["null_resource.c7a"]
 }
 
 data "template_file" "c7a-1" {
-  template = "${file("${path.root}/data/cassandra-1-ip.txt")}"
+  template = "${file("${path.root}/data/${terraform.workspace}-cassandra-1-ip.txt")}"
   depends_on = ["null_resource.c7a"]
 }
 
 resource "kubernetes_pod" "nodejs" {
   metadata{
-    name = "nodejs"
+    name = "${terraform.workspace}-nodejs"
     labels {
-      name = "nodejs"
+      name = "${terraform.workspace}-nodejs"
     }
   }
   spec {
@@ -49,7 +49,7 @@ resource "kubernetes_pod" "nodejs" {
 
 resource "kubernetes_service" "nodejs" {
   "metadata" {
-    name = "nodejs"
+    name = "${terraform.workspace}-nodejs"
   }
   "spec" {
     selector {
