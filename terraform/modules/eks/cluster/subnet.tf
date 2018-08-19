@@ -9,10 +9,10 @@ resource "aws_subnet" "public-subnet" {
   availability_zone = "${data.aws_availability_zones.available.names[count.index]}"
 
   tags {
-    KubernetesCluster = "${var.k8s_cluster}"
+    KubernetesCluster = "${terraform.workspace}-${var.k8s_cluster}"
     Name              = "${terraform.workspace}-public-subnet"
     Environment       = "${terraform.workspace}"
-    "kubernetes.io/cluster/${var.k8s_cluster}" = "shared"
+    "kubernetes.io/cluster/${terraform.workspace}-${var.k8s_cluster}" = "shared"
   }
 }
 

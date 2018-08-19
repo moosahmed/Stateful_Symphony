@@ -1,20 +1,20 @@
 apiVersion: "apps/v1"
 kind: StatefulSet
 metadata:
-  name: ${tf_workspace}-cassandra
+  name: cassandra
 spec:
-  serviceName: ${tf_workspace}-cassandra
+  serviceName: cassandra
   replicas: 2
   selector:
     matchLabels:
-      app: ${tf_workspace}-cassandra
+      app: cassandra
   template:
     metadata:
       labels:
-        app: ${tf_workspace}-cassandra
+        app: cassandra
     spec:
       containers:
-      - name: ${tf_workspace}-cassandra
+      - name: cassandra
         image: cassandra:3
         imagePullPolicy: IfNotPresent
         ports:
@@ -28,7 +28,7 @@ spec:
           name: cql
         env:
         - name: CASSANDRA_SEEDS
-          value: ${tf_workspace}-cassandra-0.cassandra.default.svc.cluster.local
+          value: cassandra-0.cassandra.default.svc.cluster.local
         - name: MAX_HEAP_SIZE
           value: 256M
         - name: HEAP_NEWSIZE
@@ -49,10 +49,10 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: ${tf_workspace}-c7a-config
+            name: c7a-config
   volumeClaimTemplates:
   - metadata:
-      name: ${tf_workspace}-cassandra-data
+      name: cassandra-data
       annotations:  # comment line if you want to use a StorageClass
         # or specify which StorageClass
         volume.beta.kubernetes.io/storage-class: ""   # comment line if you

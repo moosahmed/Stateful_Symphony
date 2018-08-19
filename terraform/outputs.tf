@@ -46,7 +46,7 @@ users:
       args:
         - "token"
         - "-i"
-        - "${var.k8s_cluster}"
+        - "${terraform.workspace}-${var.k8s_cluster}"
 KUBECONFIG
 }
 

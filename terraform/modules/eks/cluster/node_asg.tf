@@ -8,18 +8,18 @@ resource "aws_autoscaling_group" "nodes" {
 
   tag = {
     key                 = "KubernetesCluster"
-    value               = "${var.k8s_cluster}"
+    value               = "${terraform.workspace}-${var.k8s_cluster}"
     propagate_at_launch = true
   }
 
   tag = {
     key                 = "Name"
-    value               = "nodes.${var.k8s_cluster}"
+    value               = "${terraform.workspace}-nodes.${var.k8s_cluster}"
     propagate_at_launch = true
   }
 
   tag = {
-    key                 = "kubernetes.io/cluster/${var.k8s_cluster}"
+    key                 = "kubernetes.io/cluster/${terraform.workspace}-${var.k8s_cluster}"
     value               = "owned"
     propagate_at_launch = true
   }

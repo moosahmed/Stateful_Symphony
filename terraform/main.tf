@@ -25,7 +25,7 @@ data "external" "aws-iam-authenticator" {
   program = ["bash", "${path.root}/data/authenticator.sh"]
 
   query {
-    cluster_name = "${var.k8s_cluster}"
+    cluster_name = "${terraform.workspace}-${var.k8s_cluster}"
   }
 }
 
@@ -107,6 +107,10 @@ module "k8s_config_map" {
 
 module "k8s_c7a" {
   source = "./modules/k8s/c7a"
+
+  k8s_cluster = "${var.k8s_cluster}"
+  eks_cluster_cert_auth_0data = "${module.eks_cluster.eks_cluster_cert_auth_0data}"
+  eks_cluster_endpoint = "${module.eks_cluster.eks_cluster_endpoint}"
 }
 
 module "k8s_spark" {

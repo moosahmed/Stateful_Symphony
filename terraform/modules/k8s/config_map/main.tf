@@ -1,7 +1,7 @@
 resource "kubernetes_config_map" "aws_auth" {
   metadata {
-    name      = "${terraform.workspace}-aws-auth"
-    namespace = "${terraform.workspace}-kube-system"
+    name      = "aws-auth"
+    namespace = "kube-system"
   }
 
   data {

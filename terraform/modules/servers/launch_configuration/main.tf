@@ -15,14 +15,14 @@ data "template_file" "worker-userdata" {
 
   vars {
     eks_cluster_cert_auth_0data = "${var.eks_cluster_cert_auth_0data}"
-    k8s_cluster = "${var.k8s_cluster}"
+    k8s_cluster = "${terraform.workspace}-${var.k8s_cluster}"
     eks_cluster_endpoint = "${var.eks_cluster_endpoint}"
     aws_region = "${data.aws_region.current.name}"
   }
 }
 
 resource "aws_launch_configuration" "nodes" {
-  name_prefix                 = "nodes.${var.k8s_cluster}-"
+  name_prefix                 = "nodes.${terraform.workspace}-${var.k8s_cluster}-"
   image_id                    = "${data.aws_ami.eks-worker.id}"
   instance_type               = "${var.node_instance_type}"
   iam_instance_profile        = "${var.node_iam_instance_profile_id}"

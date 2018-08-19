@@ -160,13 +160,13 @@ resource "kubernetes_pod" "spark-driver" {
     volume {
       name = "pycfg-volume"
       config_map {
-        name = "spark-config"
+        name = "${terraform.workspace}-spark-config"
       }
     }
     volume {
       name = "s3cfg-volume"
       config_map {
-        name = "s3-config"
+        name = "${terraform.workspace}-s3-config"
       }
     }
   }
@@ -195,7 +195,7 @@ bucket_url: ${var.s3_bucket_url}
 object: *.txt
 
 [spark_cluster]
-nodes: 172.20.238.175
+nodes: localhost
 
 [cassandra_cluster]
 host: ${data.template_file.c7a.rendered}
