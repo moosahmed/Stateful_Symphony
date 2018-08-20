@@ -3,6 +3,9 @@ This is the repo for my Insight Project for the July 2018 DevOps Engineering ses
 
 ## Table of Contents
 1. [Introduction](README.md#introduction)
+2. [Launch Platform](README.md#launch-platform)
+3. [Pipeline](README.md#data-engineering-code-base-used-as-test-case)
+4. [Platform](README.md#platform)
 
 ## Introduction
 Everyone from small startups to large enterprises are adopting containers.
@@ -21,18 +24,17 @@ Organizations isolate stateless workloads in containers from thier stateful work
 This solution will be able to handle updates to your service stack(including stateful workloads) residing in contianers with continuous delivery. Terraform will be used in the "Deploy" step to deploy the latest Docker image built in the "Build" step with zero-downtime, in an automated fashion, even if the new image requires a schema update of your stateful service.
 
 ## Plan of Action
-Automate Infrastructure using Infrastructure as Code (IaC) Orchestration and Containerization. Use Jenkins to Implement Continous Integration/Continous Deployment(CI/CD) with a focus on blue - green deployment. 
+Automate service deployments using Infrastructure and Container Orchestration.
 
 The Approach focuses on three tenants:
 1. IaC (Terraform)
 2. Container (Kubernetes, Docker)
-3. CI/CD (Jenkins (blue - green deployment))
 
 ### IaC and Containerization
 The use of an IaC orchestration tool such as `Terraform` in conjunction with `Docker` is sufficient enough for most configuration management(CM) needs that you do not need a specific CM tool[<sup>[2]</sup>](README.md#Refrences#2).
 
 Docker will create an image that has all the software the server needs already installed and configured.
-This image now needs a server to run it. This is where Terraform will provision a bunch of EC2 servers and provision Kubernetes to deploy the Docker containers.
+This image now needs a server to run it. This is where Terraform will orchestrate the servers and provision `Kubernetes` to deploy the Docker containers.
 
 Benefits of this approach:
 1. Mutable
@@ -44,24 +46,16 @@ Benefits of this approach:
   * Limit failure modes of the infrastructure
   * Server architecture management is minimal
 
-### CI/CD
-As part of a CI/CD pipeline deploy updated Docker images for the services once set up. In particular stateful services that manage thier own schemas.
- 1. How will we deploy updates which can include databse schema updates?
-   * Define new containers to be deployed
-   * Update database schema which will depend on new container definitions.
-   * Deploy new containers and update Kubernetes using the updated database schema
- 2. Granular Deployment - Limit CD's scope to updating the frequently changed resources and not the infrequently changed resources.
-   * CD can have set of permissions
+### Service Updates
+Deploy updated services once set up. In particular stateful services that manage thier own schemas.
+ 1. How will we deploy updates which can include database schema updates?
+   * Database pods will be part of stateful set with persistent volumes attached, when a DB pod is redeployed it reattaches to the persistent volumes, thus keeping state.
+ 2. Granular Deployment - Limit update scope to updating the frequently changed resources and not the infrequently changed resources.
    * Terraform will use `-target` functionality.
-   * Limiting scope increases scalability. - wouldnt `terraform apply` everything in an automated way.
- 3. How can we achieve this while maintaining blue-green deployment
- 4. Jenkins will be used instead of AWS CodePipeline to avoid vendor lock-in
+   * Limiting scope increases scalability. - Wouldn't re provision everything in an automated way.
 
-### Stretch Goals
-1. Test impact of Docker update and roll back to a previous version
-2. Some Monitoring/Observability
-
-## Prerequisites
+## Launch Platform
+### Prerequisites
 
 1. AWS account
     1. IAM should have permissions for all resources used within.
@@ -70,6 +64,20 @@ As part of a CI/CD pipeline deploy updated Docker images for the services once s
 2. Install Terraform
 3. aws-iam-authenticator : https://github.com/kubernetes-sigs/aws-iam-authenticator
 4. Install kubectl
+
+### One-Click
+Once the above is set up, you can cd into the terraform directory and hit terraform apply. Your Services are deployed!
+
+## Data Engineering Code Base [Used](github.com/CCInCharge/campsite-hot-or-not) as test case
+
+![Used](https://raw.githubusercontent.com/moosahmed/Stateful_Symphony/master/images/pipe.png "Used")
+
+## Platform
+
+![Platform](https://raw.githubusercontent.com/moosahmed/Stateful_Symphony/master/images/pipe.png "Platform")
+
+## Directory Structure
+
 
 ## References
 1. https://mesosphere.com/blog/stateful-services-black-sheep-container-world/
