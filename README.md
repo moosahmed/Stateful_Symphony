@@ -3,9 +3,10 @@ This is the repo for my Insight Project for the July 2018 DevOps Engineering ses
 
 ## Table of Contents
 1. [Introduction](README.md#introduction)
-2. [Launch Platform](README.md#launch-platform)
+2. [Launch](README.md#launch)
 3. [Pipeline](README.md#data-engineering-code-base-used-as-test-case)
 4. [Platform](README.md#platform)
+5. [Directory Structure](README.md#directory-structure)
 
 ## Introduction
 Everyone from small startups to large enterprises are adopting containers.
@@ -54,7 +55,7 @@ Deploy updated services once set up. In particular stateful services that manage
    * Terraform will use `-target` functionality.
    * Limiting scope increases scalability. - Wouldn't re provision everything in an automated way.
 
-## Launch Platform
+## Launch
 ### Prerequisites
 
 1. AWS account
@@ -74,10 +75,12 @@ Once the above is set up, you can cd into the terraform directory and hit terraf
 
 ## Platform
 
-![Platform](https://raw.githubusercontent.com/moosahmed/Stateful_Symphony/master/images/pipe.png "Platform")
+![Platform](https://raw.githubusercontent.com/moosahmed/Stateful_Symphony/master/images/platform.png "Platform")
 
 ## Directory Structure
 
+![Structure](https://raw.githubusercontent.com/moosahmed/Stateful_Symphony/master/images/tree1.png "Structure")
+![Structure](https://raw.githubusercontent.com/moosahmed/Stateful_Symphony/master/images/tree2.png "Structure")
 
 ## References
 1. https://mesosphere.com/blog/stateful-services-black-sheep-container-world/
