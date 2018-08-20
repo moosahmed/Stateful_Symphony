@@ -70,22 +70,13 @@ resource "null_resource" "c7a-statefulset" {
     echo '${data.template_file.kubeconfig.rendered}' > $HOME/.kube/config &&
     echo '${data.template_file.deployment.rendered}' > /tmp/deployment.yaml &&
     kubectl delete --kubeconfig=$HOME/.kube/config --ignore-not-found=true -f /tmp/deployment.yaml &&
-    kubectl create --kubeconfig=$HOME/.kube/config -f /tmp/deployment.yaml
+    kubectl create --kubeconfig=$HOME/.kube/config -f /tmp/deployment.yaml &&
+    sleep 300 &&
+    kubectl exec cassandra-0 -- cqlsh -f scripts/create_keyspaces
   EOF
   }
   depends_on = ["kubernetes_config_map.c7a-config"]
 }
-
-resource "null_resource" "c7a-cql" {
-  provisioner "local-exec" {
-    command = <<EOF
-    sleep 150 &&
-    kubectl exec cassandra-0 -- cqlsh -f scripts/create_keyspaces
-  EOF
-  }
-  depends_on = ["null_resource.c7a-statefulset"]
-}
-
 
 data "template_file" "deployment" {
   template = "${file("${path.root}/data/c7a_statefulset.yml")}"

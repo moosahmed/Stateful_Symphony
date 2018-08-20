@@ -1,5 +1,7 @@
 # Stateful Symphony
-This is the repo for my Insight Project for the July 2018 DevOps Engineering session 
+One-click Auto-Orchestrating Data Platform for my Insight Project - 2018c DevOps Engineering session 
+
+[Link to Slides](https://drive.google.com/open?id=134hZsT7wfJnNBD61s5mCT0XFj4KIue_-_AZZJuyE--k)
 
 ## Table of Contents
 1. [Introduction](README.md#introduction)
@@ -7,6 +9,7 @@ This is the repo for my Insight Project for the July 2018 DevOps Engineering ses
 3. [Pipeline](README.md#data-engineering-code-base-used-as-test-case)
 4. [Platform](README.md#platform)
 5. [Directory Structure](README.md#directory-structure)
+6. [References](README.md#references)
 
 ## Introduction
 Everyone from small startups to large enterprises are adopting containers.
@@ -20,19 +23,19 @@ Containers offer:
 ### Stateless vs Stateful workload
 Stateless applications don't "store" data. When a contianer, containing a stateless application redeploys, anything stored is lost. Stateful applications (i.e. Postgres) are services that require backing storage and keeping "state" is critical to running that service. So when a continer is updated and re-deployed we dont want data to be lost.
 
-Organizations isolate stateless workloads in containers from thier stateful workloads(e.g. Data Services). This adds complexity and challenges. In the age of data-driven, microservice-based apps, managing these systems on single platform is of high value.[<sup>[1]</sup>](README.md#Refrences#1)
+Organizations isolate stateless workloads in containers from thier stateful workloads(e.g. Data Services). This adds complexity and challenges. In the age of data-driven, microservice-based apps, managing these systems on single platform is of high value.[<sup>[1]</sup>](https://mesosphere.com/blog/stateful-services-black-sheep-container-world/)
 
 This solution will be able to handle updates to your service stack(including stateful workloads) residing in contianers with continuous delivery. Terraform will be used in the "Deploy" step to deploy the latest Docker image built in the "Build" step with zero-downtime, in an automated fashion, even if the new image requires a schema update of your stateful service.
 
 ## Plan of Action
 Automate service deployments using Infrastructure and Container Orchestration.
 
-The Approach focuses on three tenants:
+The Approach focuses on two tenants:
 1. IaC (Terraform)
-2. Container (Kubernetes, Docker)
+2. Container Orchestration (Kubernetes, Docker)
 
 ### IaC and Containerization
-The use of an IaC orchestration tool such as `Terraform` in conjunction with `Docker` is sufficient enough for most configuration management(CM) needs that you do not need a specific CM tool[<sup>[2]</sup>](README.md#Refrences#2).
+The use of an IaC orchestration tool such as `Terraform` in conjunction with `Docker` is sufficient enough for most configuration management(CM) needs that you do not need a specific CM tool[<sup>[2]</sup>](https://blog.gruntwork.io/why-we-use-terraform-and-not-chef-puppet-ansible-saltstack-or-cloudformation-7989dad2865c).
 
 Docker will create an image that has all the software the server needs already installed and configured.
 This image now needs a server to run it. This is where Terraform will orchestrate the servers and provision `Kubernetes` to deploy the Docker containers.
@@ -79,11 +82,10 @@ Once the above is set up, you can cd into the terraform directory and hit terraf
 
 ## Directory Structure
 
-![Structure](https://raw.githubusercontent.com/moosahmed/Stateful_Symphony/master/images/tree1.png "Structure")
+![Directory](https://raw.githubusercontent.com/moosahmed/Stateful_Symphony/master/images/tree1.png "Directory")
+
 ![Structure](https://raw.githubusercontent.com/moosahmed/Stateful_Symphony/master/images/tree2.png "Structure")
 
 ## References
-1. https://mesosphere.com/blog/stateful-services-black-sheep-container-world/
-2. https://blog.gruntwork.io/why-we-use-terraform-and-not-chef-puppet-ansible-saltstack-or-cloudformation-7989dad2865c
-3. https://medium.com/build-acl/docker-deployments-using-terraform-d2bf36ec7bdf
-4. https://medium.com/muhammet-arslan/kubernetes-cluster-on-aws-with-terraform-1-fdf9b6928ba6
+1. https://medium.com/build-acl/docker-deployments-using-terraform-d2bf36ec7bdf
+2. https://medium.com/muhammet-arslan/kubernetes-cluster-on-aws-with-terraform-1-fdf9b6928ba6
