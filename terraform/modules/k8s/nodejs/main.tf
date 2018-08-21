@@ -23,7 +23,7 @@ resource "kubernetes_pod" "nodejs" {
   }
   spec {
     container {
-      image = "moosahmed/docker-nodejs-8:1.0"
+      image = "moosahmed/docker-nodejs-8:3.0"
       name  = "nodejs"
       command = ["/bin/bash","-c", "./start.sh"]
       env {
@@ -60,5 +60,9 @@ resource "kubernetes_service" "nodejs" {
       target_port = "3000"
       protocol = "TCP"
     }
+//    port {
+//      port = 80
+//      target_port = "8080"
+//    }
   }
 }

@@ -1,0 +1,27 @@
+apiVersion: "apps/v1"
+kind: Deployment
+metadata:
+  name: nodejs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs
+  template:
+    metadata:
+      labels:
+        app: nodejs
+    spec:     # pod spec
+      containers:
+      - name: nodejs
+        image: moosahmed/docker-nodejs-8:3.0
+        command: ["/bin/bash","-c", "./start.sh"]
+        ports:
+        - containerPort: 3000
+        env:
+        - name: CASSANDRA_HOST1
+          value: 10.3.0.119
+        - name: CASSANDRA_HOST2
+          value: 10.3.1.111
+        - name: GOOGLE_MAPS_API_KEY
+          value: AIzaSyCm-7rpg6sIKbr4sr7n7MOGpsIf1lUepeA
