@@ -21,9 +21,9 @@ Containers offer:
  4. High availability
 
 ### Stateless vs Stateful workload
-Stateless applications don't "store" data. When a contianer, containing a stateless application redeploys, anything stored is lost. Stateful applications (i.e. Postgres) are services that require backing storage and keeping "state" is critical to running that service. So when a continer is updated and re-deployed we dont want data to be lost.
+Stateless applications don't "store" data. When a container, containing a stateless application redeploys, anything stored is lost. Stateful applications (i.e. Postgres) are services that require backing storage and keeping "state" is critical to running that service. So when a continer is updated and re-deployed we dont want data to be lost.
 
-Organizations isolate stateless workloads in containers from thier stateful workloads(e.g. Data Services). This adds complexity and challenges. In the age of data-driven, microservice-based apps, managing these systems on single platform is of high value.[<sup>[1]</sup>](https://mesosphere.com/blog/stateful-services-black-sheep-container-world/)
+Organizations isolate stateless workloads in containers from their stateful workloads(e.g. Data Services). This adds complexity and challenges. In the age of data-driven, microservice-based apps, managing these systems on single platform is of high value.[<sup>[1]</sup>](https://mesosphere.com/blog/stateful-services-black-sheep-container-world/)
 
 This solution will be able to handle updates to your service stack(including stateful workloads) residing in contianers with continuous delivery. Terraform will be used in the "Deploy" step to deploy the latest Docker image built in the "Build" step with zero-downtime, in an automated fashion, even if the new image requires a schema update of your stateful service.
 
@@ -41,7 +41,7 @@ Docker will create an image that has all the software the server needs already i
 This image now needs a server to run it. This is where Terraform will orchestrate the servers and provision `Kubernetes` to deploy the Docker containers.
 
 Benefits of this approach:
-1. Mutable
+1. Immutable
   * Thus avoiding configuration drift.
 2. Declarative 
   * Knowing history of changes in Infrastructure is not required
@@ -51,12 +51,12 @@ Benefits of this approach:
   * Server architecture management is minimal
 
 ### Service Updates
-Deploy updated services once set up. In particular stateful services that manage thier own schemas.
+Deploy updated services once set up. In particular stateful services that manage their own schemas.
  1. How will we deploy updates which can include database schema updates?
    * Database pods will be part of stateful set with persistent volumes attached, when a DB pod is redeployed it reattaches to the persistent volumes, thus keeping state.
  2. Granular Deployment - Limit update scope to updating the frequently changed resources and not the infrequently changed resources.
    * Terraform will use `-target` functionality.
-   * Limiting scope increases scalability. - Wouldn't re provision everything in an automated way.
+   * Limiting scope increases scalability. - Would not re provision everything in an automated way.
 
 ## Launch
 ### Prerequisites
@@ -64,7 +64,7 @@ Deploy updated services once set up. In particular stateful services that manage
 1. AWS account
     1. IAM should have permissions for all resources used within.
     2. Make sure to gitignore your terraform.tfvars before the step below.
-    3. Make a terraform.tfvars and provide access_key = "your_aws_access_key_id" secret_key = "your_aws_secret_access_key". (The environemnt variables were not used because the aws keys are used in multiple places - not just for the provider.)
+    3. Make a terraform.tfvars and provide access_key = "your_aws_access_key_id" secret_key = "your_aws_secret_access_key". (The environment variables were not used because the aws keys are used in multiple places - not just for the provider.)
 2. Install Terraform
 3. aws-iam-authenticator : https://github.com/kubernetes-sigs/aws-iam-authenticator
 4. Install kubectl

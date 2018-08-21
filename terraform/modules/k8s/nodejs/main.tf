@@ -36,7 +36,7 @@ resource "kubernetes_pod" "nodejs" {
       }
       env {
         name = "GOOGLE_MAPS_API_KEY"
-        value = "AIzaSyCMpxfJ4SlUkk-7Cq2FazWxfjxnKxA-Sl4"
+        value = "AIzaSyCm-7rpg6sIKbr4sr7n7MOGpsIf1lUepeA"
       }
       port {
         container_port = 3000
