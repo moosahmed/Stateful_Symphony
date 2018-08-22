@@ -1,8 +1,8 @@
 provider "http" {}
 
 provider "aws" {
-//  access_key = "${var.access_key}"
-//  secret_key = "${var.secret_key}"
+  access_key = "${var.access_key}"
+  secret_key = "${var.secret_key}"
   region = "${var.aws_region}"
 }
 
@@ -127,4 +127,5 @@ module "k8s_spark" {
 module "k8s_njs" {
   source = "./modules/k8s/nodejs"
   c7a-ips_id = "${module.k8s_c7a.c7a-ips_id}"
+  gmaps_api_key = "${var.gmaps_api_key}"
 }

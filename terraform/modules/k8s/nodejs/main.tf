@@ -16,9 +16,9 @@ data "template_file" "c7a-1" {
 
 resource "kubernetes_pod" "nodejs" {
   metadata{
-    name = "${terraform.workspace}-nodejs"
+    name = "nodejs"
     labels {
-      name = "${terraform.workspace}-nodejs"
+      name = "nodejs"
     }
   }
   spec {
@@ -36,7 +36,7 @@ resource "kubernetes_pod" "nodejs" {
       }
       env {
         name = "GOOGLE_MAPS_API_KEY"
-        value = "AIzaSyCm-7rpg6sIKbr4sr7n7MOGpsIf1lUepeA"
+        value = "${var.gmaps_api_key}"
       }
       port {
         container_port = 3000

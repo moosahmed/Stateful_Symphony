@@ -20,3 +20,7 @@ variable "access_key" {
 variable "secret_key" {
   description = "In `terraform.tfvars` file: access_key = 'your_aws_secret_access_key'. Make sure to gitignore your tfvars file"
 }
+
+variable "gmaps_api_key" {
+  description = "In `terraform.tfvars` file: gmaps_api_key = 'your_google_maps_js_api_key'. This should include tiumezone API aswell. Take a look at index.hbs:30 in docker-nodejs folder"
+}

@@ -64,7 +64,7 @@ Deploy updated services once set up. In particular stateful services that manage
 1. AWS account
     1. IAM should have permissions for all resources used within.
     2. Make sure to gitignore your terraform.tfvars before the step below.
-    3. Make a terraform.tfvars and provide access_key = "your_aws_access_key_id" secret_key = "your_aws_secret_access_key". (The environment variables were not used because the aws keys are used in multiple places - not just for the provider.)
+    3. Make a terraform.tfvars in the terraform directory and provide access_key = "your_aws_access_key_id" secret_key = "your_aws_secret_access_key", k8s_cluster, gmaps_api_key. (The environment variables were not used because the aws keys are used in multiple places - not just for the provider.)
 2. Install Terraform
 3. aws-iam-authenticator : https://github.com/kubernetes-sigs/aws-iam-authenticator
 4. Install kubectl
