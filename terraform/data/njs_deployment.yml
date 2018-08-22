@@ -11,7 +11,7 @@ spec:
     metadata:
       labels:
         app: nodejs
-    spec:     # pod spec
+    spec:
       containers:
       - name: nodejs
         image: moosahmed/docker-nodejs-8:3.0
@@ -20,8 +20,8 @@ spec:
         - containerPort: 3000
         env:
         - name: CASSANDRA_HOST1
-          value: 10.3.0.119
+          value: ${c7a-1-ip}
         - name: CASSANDRA_HOST2
-          value: 10.3.1.111
+          value: ${c7a-2-ip}
         - name: GOOGLE_MAPS_API_KEY
-          value: AIzaSyCm-7rpg6sIKbr4sr7n7MOGpsIf1lUepeA
+          value: ${gmaps-key}

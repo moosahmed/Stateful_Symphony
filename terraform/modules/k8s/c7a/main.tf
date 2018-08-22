@@ -68,9 +68,9 @@ resource "null_resource" "c7a-statefulset" {
   provisioner "local-exec" {
     command = <<EOF
     echo '${data.template_file.kubeconfig.rendered}' > $HOME/.kube/config &&
-    echo '${data.template_file.deployment.rendered}' > /tmp/deployment.yaml &&
-    kubectl delete --kubeconfig=$HOME/.kube/config --ignore-not-found=true -f /tmp/deployment.yaml &&
-    kubectl create --kubeconfig=$HOME/.kube/config -f /tmp/deployment.yaml &&
+    echo '${data.template_file.statefulset.rendered}' > /tmp/statefulset.yaml &&
+    kubectl delete --kubeconfig=$HOME/.kube/config --ignore-not-found=true -f /tmp/statefulset.yaml &&
+    kubectl create --kubeconfig=$HOME/.kube/config -f /tmp/statefulset.yaml &&
     sleep 300 &&
     kubectl exec cassandra-0 -- cqlsh -f scripts/create_keyspaces
   EOF
@@ -78,7 +78,7 @@ resource "null_resource" "c7a-statefulset" {
   depends_on = ["kubernetes_config_map.c7a-config"]
 }
 
-data "template_file" "deployment" {
+data "template_file" "statefulset" {
   template = "${file("${path.root}/data/c7a_statefulset.yml")}"
   vars {
     tf_workspace = "${terraform.workspace}"
