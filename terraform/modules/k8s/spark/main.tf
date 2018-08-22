@@ -180,7 +180,7 @@ resource "null_resource" "c7a" {
 }
 
 data "template_file" "c7a" {
-  template = "${file("${path.root}/data/${terraform.workspace}-cassandra-0-ip.txt")}"
+  template = "${file("${path.root}/data/cassandra-0-ip.txt")}"
   depends_on = ["null_resource.c7a"]
 }
 

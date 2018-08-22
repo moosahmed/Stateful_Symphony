@@ -135,8 +135,8 @@ resource "null_resource" "c7a-ips" {
   }
   provisioner "local-exec" {
     command = <<EOF
-    kubectl get pod cassandra-0 -o json | jq -r '.status.podIP' | tr -d '\n' > "${path.root}/data/${terraform.workspace}-cassandra-0-ip.txt";
-    kubectl get pod cassandra-1 -o json | jq -r '.status.podIP' | tr -d '\n' > "${path.root}/data/${terraform.workspace}-cassandra-1-ip.txt";
+    kubectl get pod cassandra-0 -o json | jq -r '.status.podIP' | tr -d '\n' > "${path.root}/data/cassandra-0-ip.txt";
+    kubectl get pod cassandra-1 -o json | jq -r '.status.podIP' | tr -d '\n' > "${path.root}/data/cassandra-1-ip.txt";
   EOF
   }
   depends_on = ["null_resource.c7a-statefulset"]
