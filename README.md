@@ -68,6 +68,7 @@ Deploy updated services once set up. In particular stateful services that manage
 2. Install Terraform
 3. aws-iam-authenticator : https://github.com/kubernetes-sigs/aws-iam-authenticator
 4. Install kubectl
+5. Run `terraform workspace new dev`
 
 ### One-Click
 Once the above is set up, you can cd into the terraform directory and hit terraform apply. Your Services are deployed!
