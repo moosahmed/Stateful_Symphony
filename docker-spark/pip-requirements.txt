@@ -1,6 +1,6 @@
 cassandra-driver==3.12.0
 py4j==0.10.4
-pyspark==2.2.1
+pyspark==2.2.2
 pytz==2017.3
 six==1.11.0
 configparser
